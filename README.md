@@ -3,8 +3,9 @@ Codeworks seniors London - thesis project Nov 2021
 
 ## API Endpoints summary
 
-IDX | Method | Endpoint | Status|
+. | Method | Endpoint | Status|
 | :--- | :---:   |   :---  | :---:| 
+| 📝 Students |
 | [Add Student](#addStudent) | POST | /student | 201 |
 | [Get Student](#getStudent) | GET | /student/:id | 200 |
 | [Update Student](#updateStudent) | PUT | /student/:id | 202 |
@@ -12,6 +13,10 @@ IDX | Method | Endpoint | Status|
 | [Delete Student](#deleteStudent) | DELETE | /student/:id | 204 |
 | [Favourite Tutor](#favouriteTutor) | PUT | /student/:id/favourite | 202 |
 | [Block Tutor](#blockTutor) | PUT | /student/:id/block | 202 |
+| 🧑‍🏫 Tutors |
+| [Add Tutor](#addTutor) | POST | /tutor | 201 |
+
+
 
 ---
 ## <a id="addStudent">Add Student</a>
@@ -204,3 +209,35 @@ Status 202
   bio: ''
 }
 ```
+---
+## <a id="addTutor">Add Tutor</a>
+### Method
+POST
+### Endpoint
+/tutor
+### Request Body
+```
+{
+  email : string
+  name : string
+  id : string
+  photo_url: string
+}
+```
+
+### Response
+Status 201
+```
+{
+  email : string
+  name : string
+  id : string
+  photo_url: string
+  joined_date: date
+  bio: ''
+  avg_rating: null
+  completed_help_requests: 0
+  tags: []
+}
+```
+---
