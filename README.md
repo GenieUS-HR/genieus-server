@@ -238,6 +238,38 @@ Status 201
   avg_rating: null
   completed_help_requests: 0
   tags: []
+  programming_languages: []
+}
+```
+---
+## <a id="updateTutor">Update Tutor</a>
+### Method
+PUT
+### Endpoint
+/tutor/:id
+### Request Body
+```
+{
+  name : string
+  bio: string
+  photo_url: string
+  
+}
+```
+### Response
+Status 202
+```
+{
+  email : string
+  name : string
+  id : string
+  photo_url: string
+  joined_date: date
+  bio: sting
+  avg_rating: integer
+  completed_help_requests: integer
+  tags: json
+  programming_languages: json
 }
 ```
 ---
