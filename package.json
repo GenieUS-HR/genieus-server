@@ -1,0 +1,28 @@
+{
+  "name": "genieus-server",
+  "version": "1.0.0",
+  "description": "Codeworks seniors London - thesis project Nov 2021",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tookayNET/genieus-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tookayNET/genieus-server/issues"
+  },
+  "homepage": "https://github.com/tookayNET/genieus-server#readme",
+  "devDependencies": {
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
