@@ -3,18 +3,18 @@ Codeworks seniors London - thesis project Nov 2021
 
 ## API Endpoints summary
 
-IDX | Method | Endpoint | Request-body | Response | Status|
-| :--- | :---:   |   :---  |  :---:  |     :---: | ---:| 
-| Add Student | POST | /student |  |  | 201 |
-| Get Student | GET | /student/:id | |  | 200 |
-| Update Student | PUT | /student/:id | | | 202 |
-| Extend Subscription | PUT | /student/:id | | | 202 |
-| Delete Student | DELETE | /student/:id | | | 204 |
-| Favourite Tutor | PUT | /student/:id/favourite | | | 202 |
-| Block Tutor | PUT | /student/:id/block | | | 202 |
+IDX | Method | Endpoint | Status|
+| :--- | :---:   |   :---  | :---:| 
+| [Add Student](#addStudent) | POST | /student | 201 |
+| [Get Student](#getStudent) | GET | /student/:id | 200 |
+| [Update Student](#updateStudent) | PUT | /student/:id | 202 |
+| [Extend Subscription](#extendSubscription) | PUT | /student/:id | 202 |
+| [Delete Student](#deleteStudent) | DELETE | /student/:id | 204 |
+| [Favourite Tutor](#favouriteTutor) | PUT | /student/:id/favourite | 202 |
+| [Block Tutor](#blockTutor) | PUT | /student/:id/block | 202 |
 
 ---
-## Add Student
+## <a id="addStudent">Add Student</a>
 ### Method
 POST
 ### Endpoint
@@ -50,7 +50,7 @@ Status 201
 ```
 ---
 
-## Get Student
+## <a id="getStudent">Get Student</a>
 ### Method
 GET
 ### Endpoint
@@ -75,7 +75,7 @@ Status 200
 }
 ```
 ---
-## Update Student
+## <a id="updateStudent">Update Student</a>
 ### Method
 PUT
 ### Endpoint
@@ -107,7 +107,7 @@ Status 202
 }
 ```
 ---
-## Extend Subscription
+## <a id="extendSubscription">Extend Subscription</a>
 ### Method
 PUT
 ### Endpoint
@@ -135,7 +135,7 @@ Status 202
 }
 ```
 ---
-## Delete Student
+## <a id="deleteStudent">Delete Student</a>
 ### Method
 DELETE
 ### Endpoint
@@ -145,7 +145,7 @@ DELETE
 Status 204
 
 ---
-## Favourite Tutor
+## <a id="favouriteTutor">Favourite Tutor</a>
 ### Method
 PUT
 ### Endpoint
@@ -175,7 +175,7 @@ Status 202
 }
 ```
 ---
-## Block Tutor
+## <a id="blockTutor">Block Tutor</a>
 ### Method
 PUT
 ### Endpoint
