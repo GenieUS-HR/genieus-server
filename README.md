@@ -525,6 +525,14 @@ Status 201
   zoom_url: string
   call_length: integer
   favourites_only: boolean
+  tutor: {
+    tutor_name: string
+    tutor_photo_url: string
+  }
+  student: {
+    student_name: string
+    student_photo_url: string
+  }
 }
 ```
 
@@ -607,6 +615,14 @@ Status 201
   zoom_url: string
   call_length: integer
   favourites_only: boolean
+  tutor: {
+    tutor_name: string
+    tutor_photo_url: string
+  }
+  student: {
+    student_name: string
+    student_photo_url: string
+  }
 }
 ```
 
@@ -660,6 +676,14 @@ Status 200
   zoom_url: string
   call_length: integer
   favourites_only: boolean
+  tutor: {
+    tutor_name: string
+    tutor_photo_url: string
+  }
+  student: {
+    student_name: string
+    student_photo_url: string
+  }
 }
 ```
 
@@ -708,6 +732,14 @@ Status 200
     zoom_url: string
     call_length: integer
     favourites_only: boolean
+    tutor: {
+      tutor_name: string
+      tutor_photo_url: string
+    }
+    student: {
+      student_name: string
+      student_photo_url: string
+    }
   }
 ]
 ```
@@ -753,6 +785,14 @@ Status 200
     zoom_url: string
     call_length: integer
     favourites_only: boolean
+    tutor: {
+      tutor_name: string
+      tutor_photo_url: string
+    }
+    student: {
+      student_name: string
+      student_photo_url: string
+    }
   }
 ]
 ```
