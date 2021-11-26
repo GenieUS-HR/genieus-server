@@ -47,7 +47,6 @@ POST
   name : string
   id : string
   subscription_type: ('basic', 'pro', 'max')
-  lastpayment_date: date
   photo_url: string
 }
 ```
