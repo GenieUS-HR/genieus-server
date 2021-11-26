@@ -27,6 +27,8 @@ Codeworks seniors London - thesis project Nov 2021
 | [Get Help Request](#getHelpRequest)                  | GET    | /helprequest/:id             |    200 |
 | [Get Help Requests](#getHelpRequests)                | GET    | /helprequest?parameter=value |    200 |
 | [Get Pending Help Requests](#getPendingHelpRequests) | GET    | /helprequest/:tutor_id       |    200 |
+| 💰 Subscriptions                                     |
+| [Get Subscriptions](#getSubscriptions)               | GET    | /subscriptions               |    200 |
 
 ---
 
@@ -753,6 +755,32 @@ Status 200
     favourites_only: boolean
   }
 ]
+```
+
+---
+
+## <a id="getSubscriptions">Get Subscriptions</a>
+
+### Method
+
+GET
+
+### Endpoint
+
+/subscriptions
+
+### Response
+
+Status 200
+
+```
+{
+  id: string
+  subscription_name: string
+  description: string
+  minutes: integer
+  active: boolean
+}
 ```
 
 ---
