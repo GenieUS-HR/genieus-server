@@ -486,7 +486,8 @@ Status 201
 > You can use this to modify the help request after it was created and also to set the status  
 > If you send a status in the request body we will update the respective dates  
 > i.e. if you send status: 'assigned', we will update the assigned date
-> if you send either of the closed statuses we will update the closed date
+> if you send either of the closed statuses we will update the closed date  
+> If request includes rating, we will update tutor average rating
 
 ### Method
 
@@ -512,7 +513,7 @@ PATCH
 }
 ```
 
-### 🤔 Example Body
+### 🤔 Example Request Bodies
 
 Assign the help request to a tutor:
 
@@ -520,6 +521,15 @@ Assign the help request to a tutor:
 {
   status: 'assigned',
   tutor_id: 'abcd123',
+}
+```
+
+Submit feedback on a help request:
+
+```
+{
+  rating: (0-5),
+  feedback_comments?: string
 }
 ```
 
@@ -576,7 +586,7 @@ GET
 
 ### Response
 
-Status 201
+Status 200
 
 ```
 {
@@ -595,6 +605,95 @@ Status 201
   code: text
   zoom_url: string
 }
+```
+
+---
+
+## <a id="getHelpRequests">Get Help Requests</a>
+
+### Method
+
+GET
+
+### Endpoint
+
+/helprequest?parameter=value
+
+### Query Parameters
+
+- student_id: string
+- tutor_id: string
+- status: ('pending' | 'assigned' | 'closed-complete' | 'closed-incomplete')
+- language: string (see list of language names)
+- limit_responses: integer (will limit number requests returned)
+
+### Response
+
+Status 200
+
+- response will be sorted with newest requests first
+
+```
+[
+  {
+    id: string
+    student_id: string
+    tutor_id: string | null
+    status: string
+    description: text
+    time_opened: date
+    time_accepted: date | null
+    time_closed: date | null
+    rating: integer | null
+    feedback_comments: text | null
+    tags: json
+    language: string
+    code: text
+    zoom_url: string
+  }
+]
+```
+
+---
+
+## <a id="getPendingHelpRequests">Get Pending Help Requests</a>
+
+### Method
+
+GET
+
+### Endpoint
+
+/helprequest/:tutor_id
+
+### Response
+
+Status 200
+
+- response will only include pending requests
+- response will be sorted with _oldest_ requests first
+- list will be filtered to show only requests that match the tutor's selected programming langages
+- list will be filtered to exclude any requests from users that have blocked the tutor
+
+```
+[
+  {
+    id: string
+    student_id: string
+    tutor_id: string | null
+    status: string
+    description: text
+    time_opened: date
+    time_accepted: date | null
+    time_closed: date | null
+    rating: integer | null
+    feedback_comments: text | null
+    tags: json
+    language: string
+    code: text
+    zoom_url: string
+  }
+]
 ```
 
 ---
