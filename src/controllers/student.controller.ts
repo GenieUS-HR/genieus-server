@@ -56,3 +56,32 @@ export async function addStudent(req: Request, res: Response) {
     res.end();
   }
 }
+
+export async function deleteStudent(req: Request, res: Response) {
+  try {
+    const studentId = req.params.id;
+
+    await db.Student.deleteStudent(studentId);
+    res.sendStatus(204);
+    res.end();
+  } catch (error) {
+    res.status(500);
+    res.send(error);
+    res.end();
+  }
+}
+
+export async function updateStudent(req: Request, res: Response) {
+  try {
+    const studentId = req.params.id;
+    const studentReq = req.body;
+    const dbRes = await db.Student.updateStudent(studentId, studentReq);
+    res.status(202);
+    res.send(dbRes);
+    res.end();
+  } catch (error) {
+    res.status(500);
+    res.send(error);
+    res.end();
+  }
+}
