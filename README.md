@@ -502,8 +502,6 @@ Status 201
 ```
 {
   id: string
-  student_id: string
-  tutor_id: string | null
   status: string
   description: text
   time_opened: date
@@ -518,10 +516,12 @@ Status 201
   call_length: integer
   favourites_only: boolean
   tutor: {
+    tutor_id: string | null
     tutor_name: string
     tutor_photo_url: string
   }
   student: {
+    student_id: string
     student_name: string
     student_photo_url: string
   }
