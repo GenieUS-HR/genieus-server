@@ -486,7 +486,11 @@ POST
 
 ```
 {
-  student_id: string
+  student: {
+    student_id: string
+    student_name: string
+    student_photo_url: string
+  }
   description: text
   tags?: json
   language: string

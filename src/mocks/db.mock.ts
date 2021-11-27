@@ -1,7 +1,10 @@
 import students from './students.mock.js';
 import tutors from './tutors.mock.js';
+import helprequests from './helprequests.mock.js';
+
 import Student from '../types/student.js';
 import Tutor from '../types/tutor.js';
+import HelpRequest from '../types/helprequest.js';
 
 type DB = {
   [name: string]: any;
@@ -68,6 +71,40 @@ db.Tutor.updateTutor = (id: string, tutorReq: {}): Promise<Tutor | null> => {
     if (tutor.id === id) {
       Object.assign(tutor, tutorReq);
       dbRes = tutor;
+    }
+  });
+  return Promise.resolve(dbRes);
+};
+
+db.HelpRequest = {};
+db.HelpRequest.getAll = () => Promise.resolve(helprequests);
+db.HelpRequest.getHelpRequest = (id: string): Promise<HelpRequest | null> => {
+  const dbRes = helprequests.filter((helprequest) => helprequest.id === id);
+  if (dbRes.length > 0) return Promise.resolve(dbRes[0]);
+  return null;
+};
+db.HelpRequest.addHelpRequest = (helprequest: HelpRequest) => {
+  helprequests.push(helprequest);
+  return Promise.resolve(helprequest);
+};
+db.HelpRequest.deleteHelpRequest = (id: string) => {
+  let idx: number;
+  helprequests.forEach((helprequest) => {
+    if (helprequest.id === id) {
+      idx = helprequests.indexOf(helprequest);
+    }
+  });
+  helprequests.splice(idx);
+};
+db.HelpRequest.updateHelpRequest = (
+  id: string,
+  helpreqeustReq: {}
+): Promise<HelpRequest | null> => {
+  let dbRes: HelpRequest;
+  helprequests.forEach((helprequest) => {
+    if (helprequest.id === id) {
+      Object.assign(helprequest, helpreqeustReq);
+      dbRes = helprequest;
     }
   });
   return Promise.resolve(dbRes);

@@ -1,11 +1,14 @@
-type language = 'JavaScript' | 'Python';
+type language = 'JavaScript' | 'Python'; // options in dropbox ?
 type status = 'pending' | 'assigned' | 'closed-complete' | 'closed-incomplete';
 type rating = 1 | 2 | 3 | 4 | 5;
+type user = {
+  id: string;
+  name: string;
+  photo_url: string;
+};
 
 export default interface HelpRequest {
   id: string;
-  student_id: string;
-  tutor_id: string | null;
   status: status;
   description: string | null;
   time_opened: Date;
@@ -17,4 +20,8 @@ export default interface HelpRequest {
   language: language;
   code: string | null;
   zoom_url: string | null;
+  call_length: number;
+  favourites_only: boolean;
+  tutor: user | null;
+  student: user;
 }

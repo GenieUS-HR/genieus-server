@@ -13,6 +13,13 @@ import {
   deleteTutor,
   updateTutor,
 } from './controllers/tutor.controller.js';
+import {
+  getAllHelpRequests,
+  getHelpRequest,
+  addHelpRequest,
+  deleteHelpRequest,
+  updateHelpRequest,
+} from './controllers/helprequest.controller.js';
 
 const router = Router();
 
@@ -27,5 +34,11 @@ router.get('/tutor/:id', getTutor);
 router.post('/tutor', addTutor);
 router.delete('/tutor/:id', deleteTutor);
 router.patch('/tutor/:id', updateTutor);
+
+router.get('/helprequest', getAllHelpRequests);
+router.get('/helprequest/:id', getHelpRequest);
+router.post('/helprequest', addHelpRequest);
+router.delete('/helprequest/:id', deleteHelpRequest);
+router.patch('/helprequest/:id', updateHelpRequest);
 
 export default router;

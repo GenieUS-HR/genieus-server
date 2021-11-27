@@ -1,5 +1,6 @@
 import db from '../mocks/db.mock.js';
 import { Request, Response } from 'express';
+import tutor from '../types/tutor.js';
 
 export async function getAllTutors(req: Request, res: Response) {
   try {
@@ -37,7 +38,7 @@ export async function getTutor(req: Request, res: Response) {
 export async function addTutor(req: Request, res: Response) {
   try {
     const tutorReq = req.body;
-    const tutor = {
+    const tutor: tutor = {
       ...tutorReq,
       joined_date: new Date(),
       bio: '',
@@ -58,7 +59,6 @@ export async function addTutor(req: Request, res: Response) {
 export async function deleteTutor(req: Request, res: Response) {
   try {
     const tutorId = req.params.id;
-
     await db.Tutor.deleteTutor(tutorId);
     res.sendStatus(204);
     res.end();

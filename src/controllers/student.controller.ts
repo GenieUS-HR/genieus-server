@@ -1,5 +1,6 @@
 import db from '../mocks/db.mock.js';
 import { Request, Response } from 'express';
+import student from '../types/student.js';
 
 export async function getAllStudents(req: Request, res: Response) {
   try {
@@ -37,7 +38,7 @@ export async function getStudent(req: Request, res: Response) {
 export async function addStudent(req: Request, res: Response) {
   try {
     const studentReq = req.body;
-    const student = {
+    const student: student = {
       ...studentReq,
       joined_date: new Date(),
       last_payment_date: new Date(),
