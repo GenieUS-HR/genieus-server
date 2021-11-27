@@ -14,6 +14,8 @@ async function checkUserToken(req: Request, res: Response, next: NextFunction) {
     try {
       const decodedToken = await admin.auth().verifyIdToken(idToken);
       req['currentUser'] = decodedToken;
+      // ! REMOVE THIS BEFORE DEPLOYMENT
+      console.log('TESTING: user found', req['currentUser']);
     } catch (err) {
       console.error('user not logged in');
     }
