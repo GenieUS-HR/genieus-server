@@ -6,10 +6,13 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
+    "lint": "eslint . --ext .ts",
+    "build": "npm run tsc",
     "prestart": "npm run build",
+    "tsc": "tsc",
     "dev": "nodemon --watch './**/*.ts' --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -28,7 +31,9 @@
     "@typescript-eslint/parser": "^5.4.0",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
     "nodemon": "^2.0.15",
     "prettier": "2.5.0",
     "ts-node": "^10.4.0",
