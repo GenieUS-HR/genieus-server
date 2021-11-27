@@ -13,6 +13,7 @@ Codeworks seniors London - thesis project Nov 2021
 | [Extend Subscription](#extendSubscription)           | PUT    | /student/:id/subscribe       |    202 |
 | [Delete Student](#deleteStudent)                     | DELETE | /student/:id                 |    204 |
 | [Favourite Tutor](#favouriteTutor)                   | PUT    | /student/:id/favourite       |    202 |
+| [Get Favourite Tutors](#getFavouriteTutors)          | GET    | /student/:id/favourite       |    200 |
 | [Block Tutor](#blockTutor)                           | PUT    | /student/:id/block           |    202 |
 | 🧑‍🏫 Tutors                                         |
 | [Add Tutor](#addTutor)                               | POST   | /tutor                       |    201 |
@@ -26,6 +27,8 @@ Codeworks seniors London - thesis project Nov 2021
 | [Get Help Request](#getHelpRequest)                  | GET    | /helprequest/:id             |    200 |
 | [Get Help Requests](#getHelpRequests)                | GET    | /helprequest?parameter=value |    200 |
 | [Get Pending Help Requests](#getPendingHelpRequests) | GET    | /helprequest/:tutor_id       |    200 |
+| 💰 Subscriptions                                     |
+| [Get Subscriptions](#getSubscriptions)               | GET    | /subscriptions               |    200 |
 
 ---
 
@@ -47,8 +50,9 @@ POST
   name : string
   id : string
   subscription_type: ('basic', 'pro', 'max')
-  lastpayment_date: date
   photo_url: string
+  spoken_language: string[]
+  location?: string
 }
 ```
 
@@ -64,6 +68,8 @@ Status 201
   subscription_type: ('basic', 'pro', 'max')
   lastpayment_date: date
   photo_url: string
+  spoken_language: string[]
+  location: string
   joined_date: date
   subscription_expiry: date
   favourite_tutors: []
@@ -97,6 +103,8 @@ Status 200
   lastpayment_date: date
   joined_date: date
   photo_url: string
+  spoken_language: string[]
+  location: string
   subscription_expiry: date
   favourite_tutors: []
   blocked_tutors: []
@@ -123,6 +131,8 @@ PATCH
   name?: string
   bio?: string
   photo_url?: string
+  spoken_language?: string[]
+  location?: string
 
 }
 ```
@@ -144,6 +154,8 @@ Status 202
   lastpayment_date: date
   joined_date: date
   photo_url: string
+  spoken_language: string[]
+  location: string
   subscription_expiry: date
   favourite_tutors: []
   blocked_tutors: []
@@ -182,6 +194,8 @@ Status 202
   lastpayment_date: date
   joined_date: date
   photo_url: string
+  spoken_language: string[]
+  location: string
   subscription_expiry: date
   favourite_tutors: []
   blocked_tutors: []
@@ -238,11 +252,33 @@ Status 202
   lastpayment_date: date
   joined_date: date
   photo_url: string
+  spoken_language: string[]
+  location: string
   subscription_expiry: date
   favourite_tutors: []
   blocked_tutors: []
   bio: ''
 }
+```
+
+---
+
+## <a id="getFavouriteTutors">Get Favourite Tutors</a>
+
+### Method
+
+GET
+
+### Endpoint
+
+/student/:id/favourite
+
+### Response
+
+Status 200
+
+```
+tutor[]
 ```
 
 ---
@@ -278,6 +314,8 @@ Status 202
   lastpayment_date: date
   joined_date: date
   photo_url: string
+  spoken_language: string[]
+  location: string
   subscription_expiry: date
   favourite_tutors: []
   blocked_tutors: []
@@ -305,6 +343,8 @@ POST
   name : string
   id : string
   photo_url: string
+  spoken_language: string[]
+  location?: string
 }
 ```
 
@@ -318,6 +358,8 @@ Status 201
   name : string
   id : string
   photo_url: string
+  spoken_language: string[]
+  location: string
   joined_date: date
   bio: ''
   avg_rating: null
@@ -349,8 +391,10 @@ Status 200
   name : string
   id : string
   photo_url: string
+  spoken_language: string[]
+  location: string
   joined_date: date
-  bio: sting
+  bio: string
   avg_rating: integer
   completed_help_requests: integer
   tags: json
@@ -379,6 +423,8 @@ PATCH
   photo_url?: string
   tags?: string
   programming_languages?: string
+  spoken_language?: string[]
+  location?: string
 }
 ```
 
@@ -397,8 +443,10 @@ Status 202
   name : string
   id : string
   photo_url: string
+  spoken_language: string[]
+  location: string
   joined_date: date
-  bio: sting
+  bio: string
   avg_rating: integer
   completed_help_requests: integer
   tags: json
@@ -438,19 +486,16 @@ POST
 
 ```
 {
-  student_id: string
-  tutor_id: string | null
-  status: string
+  student: {
+    student_id: string
+    student_name: string
+    student_photo_url: string
+  }
   description: text
-  time_opened: date
-  time_accepted: date | null
-  time_closed: date | null
-  rating: integer | null
-  feedback_comments: text | null
-  tags: json
+  tags?: json
   language: string
   code: text
-  zoom_url: string
+  favourites_only: boolean
 }
 ```
 
@@ -461,8 +506,6 @@ Status 201
 ```
 {
   id: string
-  student_id: string
-  tutor_id: string | null
   status: string
   description: text
   time_opened: date
@@ -474,6 +517,18 @@ Status 201
   language: string
   code: text
   zoom_url: string
+  call_length: integer
+  favourites_only: boolean
+  tutor: {
+    tutor_id: string | null
+    tutor_name: string
+    tutor_photo_url: string
+  }
+  student: {
+    student_id: string
+    student_name: string
+    student_photo_url: string
+  }
 }
 ```
 
@@ -510,6 +565,7 @@ PATCH
   language?: string
   code?: text
   zoom_url?: string
+  favourites_only?: boolean
 }
 ```
 
@@ -553,6 +609,16 @@ Status 201
   language: string
   code: text
   zoom_url: string
+  call_length: integer
+  favourites_only: boolean
+  tutor: {
+    tutor_name: string
+    tutor_photo_url: string
+  }
+  student: {
+    student_name: string
+    student_photo_url: string
+  }
 }
 ```
 
@@ -604,6 +670,16 @@ Status 200
   language: string
   code: text
   zoom_url: string
+  call_length: integer
+  favourites_only: boolean
+  tutor: {
+    tutor_name: string
+    tutor_photo_url: string
+  }
+  student: {
+    student_name: string
+    student_photo_url: string
+  }
 }
 ```
 
@@ -650,6 +726,16 @@ Status 200
     language: string
     code: text
     zoom_url: string
+    call_length: integer
+    favourites_only: boolean
+    tutor: {
+      tutor_name: string
+      tutor_photo_url: string
+    }
+    student: {
+      student_name: string
+      student_photo_url: string
+    }
   }
 ]
 ```
@@ -674,6 +760,7 @@ Status 200
 - response will be sorted with _oldest_ requests first
 - list will be filtered to show only requests that match the tutor's selected programming langages
 - list will be filtered to exclude any requests from users that have blocked the tutor
+- if help request if favourites only then reponse should only be included if favourite tutors
 
 ```
 [
@@ -692,8 +779,44 @@ Status 200
     language: string
     code: text
     zoom_url: string
+    call_length: integer
+    favourites_only: boolean
+    tutor: {
+      tutor_name: string
+      tutor_photo_url: string
+    }
+    student: {
+      student_name: string
+      student_photo_url: string
+    }
   }
 ]
+```
+
+---
+
+## <a id="getSubscriptions">Get Subscriptions</a>
+
+### Method
+
+GET
+
+### Endpoint
+
+/subscriptions
+
+### Response
+
+Status 200
+
+```
+{
+  id: string
+  subscription_name: string
+  description: string
+  minutes: integer
+  active: boolean
+}
 ```
 
 ---
