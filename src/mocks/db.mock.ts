@@ -5,6 +5,7 @@ import helprequests from './helprequests.mock.js';
 import Student from '../types/student.js';
 import Tutor from '../types/tutor.js';
 import HelpRequest from '../types/helprequest.js';
+import helprequest from '../types/helprequest.js';
 
 type DB = {
   Student: studentModel;
@@ -64,6 +65,39 @@ class studentModel {
     students.forEach((student) => {
       if (student.id === id) {
         Object.assign(student, studentReq);
+        dbRes = student;
+      }
+    });
+    return Promise.resolve(dbRes);
+  };
+  getFavouriteTutor = (id: string): Promise<string[] | null> => {
+    const dbRes = students.filter((student) => student.id === id);
+    const favourite_tutors = dbRes[0].favourite_tutors;
+    return Promise.resolve(favourite_tutors);
+  };
+  getBlockTutor = (id: string): Promise<string[] | null> => {
+    const dbRes = students.filter((student) => student.id === id);
+    const blocked_tutors = dbRes[0].blocked_tutors;
+    return Promise.resolve(blocked_tutors);
+  };
+  setFavouriteTutor = (
+    id: string,
+    tutor_id: string
+  ): Promise<Student | null> => {
+    let dbRes: Student;
+    students.forEach((student) => {
+      if (student.id === id) {
+        student.favourite_tutors.push(tutor_id);
+        dbRes = student;
+      }
+    });
+    return Promise.resolve(dbRes);
+  };
+  blockTutor = (id: string, tutor_id: string): Promise<Student | null> => {
+    let dbRes: Student;
+    students.forEach((student) => {
+      if (student.id === id) {
+        student.blocked_tutors.push(tutor_id);
         dbRes = student;
       }
     });
@@ -132,6 +166,37 @@ class helpRequestModel {
         dbRes = helprequest;
       }
     });
+    return Promise.resolve(dbRes);
+  };
+  getFilteredHelpRequests = (
+    student_id: any,
+    tutor_id: any,
+    status: any,
+    language: any,
+    limit_responses: any
+  ): Promise<helprequest[] | null> => {
+    const dbRes = helprequests.filter((helprequest) => {
+      if (student_id) {
+        helprequest.student.id === student_id;
+      }
+      if (tutor_id) {
+        helprequest.tutor.id === tutor_id;
+      }
+      if (status) {
+        helprequest.status === status;
+      }
+      if (language) {
+        helprequest.language === language;
+      }
+    });
+    return limit_responses
+      ? Promise.resolve(dbRes.slice(0, limit_responses))
+      : Promise.resolve(dbRes);
+  };
+  getPendingHelpRequests = (tutor_id: string) => {
+    const dbRes = helprequests.filter(
+      (helprequest) => helprequest.tutor.id === tutor_id
+    );
     return Promise.resolve(dbRes);
   };
 }
