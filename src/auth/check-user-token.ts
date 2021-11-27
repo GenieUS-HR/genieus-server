@@ -1,4 +1,4 @@
-import admin from './firebase-service';
+import admin from './firebase-service.js';
 import { Request, Response, NextFunction } from 'express';
 
 declare module 'express-serve-static-core' {
