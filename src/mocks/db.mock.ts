@@ -7,7 +7,7 @@ import Tutor from '../types/tutor.js';
 import HelpRequest from '../types/helprequest.js';
 
 type DB = {
-  [name: string]: any;
+  [name: string]: Record<string, unknown>;
 };
 
 const db: DB = {};
@@ -33,7 +33,7 @@ db.Student.deleteStudent = (id: string) => {
 };
 db.Student.updateStudent = (
   id: string,
-  studentReq: {}
+  studentReq: Record<string, unknown>
 ): Promise<Student | null> => {
   let dbRes: Student;
   students.forEach((student) => {
@@ -65,7 +65,10 @@ db.Tutor.deleteTutor = (id: string) => {
   });
   tutors.splice(idx);
 };
-db.Tutor.updateTutor = (id: string, tutorReq: {}): Promise<Tutor | null> => {
+db.Tutor.updateTutor = (
+  id: string,
+  tutorReq: Record<string, unknown>
+): Promise<Tutor | null> => {
   let dbRes: Tutor;
   tutors.forEach((tutor) => {
     if (tutor.id === id) {
@@ -98,7 +101,7 @@ db.HelpRequest.deleteHelpRequest = (id: string) => {
 };
 db.HelpRequest.updateHelpRequest = (
   id: string,
-  helpreqeustReq: {}
+  helpreqeustReq: Record<string, unknown>
 ): Promise<HelpRequest | null> => {
   let dbRes: HelpRequest;
   helprequests.forEach((helprequest) => {
