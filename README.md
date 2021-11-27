@@ -487,18 +487,10 @@ POST
 ```
 {
   student_id: string
-  tutor_id: string | null
-  status: string
   description: text
-  time_opened: date
-  time_accepted: date | null
-  time_closed: date | null
-  rating: integer | null
-  feedback_comments: text | null
-  tags: json
+  tags?: json
   language: string
   code: text
-  zoom_url: string
   favourites_only: boolean
 }
 ```
