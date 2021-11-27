@@ -5,6 +5,9 @@ import helmet from 'helmet';
 import router from './router.js';
 import checkUserToken from './auth/check-user-token.js';
 import authenticateUser from './auth/authenticate-user.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const PORT = process.env.PORT || 8000;
 
