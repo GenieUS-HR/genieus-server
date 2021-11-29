@@ -12,9 +12,14 @@ Codeworks seniors London - thesis project Nov 2021
 | [Update Student](#updateStudent)                     | PATCH  | /student/:id                   |    202 |
 | [Extend Subscription](#extendSubscription)           | PUT    | /student/:id/subscribe         |    202 |
 | [Delete Student](#deleteStudent)                     | DELETE | /student/:id                   |    204 |
-| [Favourite Tutor](#favouriteTutor)                   | PUT    | /student/:id/favourite         |    202 |
+| [Push Favourite Tutor](#pushFavouriteTutor)          | PUT    | /student/:id/favourite/push    |    202 |
+| [Remove Favourite Tutor](#removeFavouriteTutor)      | PUT    | /student/:id/favourite/remove  |    202 |
+| [Replace Favourite Tutors](#replaceFavouriteTutors)  | PUT    | /student/:id/favourite/replace |    202 |
 | [Get Favourite Tutors](#getFavouriteTutors)          | GET    | /student/:id/favourite         |    200 |
-| [Block Tutor](#blockTutor)                           | PUT    | /student/:id/block             |    202 |
+| [Push Blocked Tutor](#pushBlockTutor)                | PUT    | /student/:id/block/push        |    202 |
+| [Remove Blocked Tutor](#removeBlockTutor)            | PUT    | /student/:id/block/remove      |    202 |
+| [Replace Blocked Tutors](#replaceBlockTutor)         | PUT    | /student/:id/block/replace     |    202 |
+| [Get Blocked Tutors](#getBlockedTutors)              | GET    | /student/:id/block             |    202 |
 | 🧑‍🏫 Tutors                                         |
 | [Add Tutor](#addTutor)                               | POST   | /tutor                         |    201 |
 | [Get Tutor](#getTutor)                               | GET    | /tutor/:id                     |    200 |
@@ -29,6 +34,14 @@ Codeworks seniors London - thesis project Nov 2021
 | [Get Pending Help Requests](#getPendingHelpRequests) | GET    | /helprequest/pending/:tutor_id |    200 |
 | 💰 Subscriptions                                     |
 | [Get Subscriptions](#getSubscriptions)               | GET    | /subscription                  |    200 |
+
+---
+
+> ### 📝 Note
+>
+> When calling update endpoints only send the fields that you want to update  
+> If the field is an array send the entire content for the array except for Favourite/Block tutor  
+> For favourite and block tutor there are separate endpoints to push/remove from array
 
 ---
 
@@ -221,7 +234,7 @@ Status 204
 
 ---
 
-## <a id="favouriteTutor">Favourite Tutor</a>
+## <a id="pushFavouriteTutor">Push Favourite Tutor</a>
 
 ### Method
 
@@ -229,13 +242,97 @@ PUT
 
 ### Endpoint
 
-/student/:id/favourite
+/student/:id/favourite/push
 
 ### Request body
 
 ```
 {
   tutor_id: string
+}
+```
+
+### Response
+
+Status 202
+
+```
+{
+  email : string
+  name : string
+  id : string
+  subscription_type: ('basic', 'pro', 'max')
+  lastpayment_date: date
+  joined_date: date
+  photo_url: string
+  spoken_language: string[]
+  location: string
+  subscription_expiry: date
+  favourite_tutors: []
+  blocked_tutors: []
+  bio: ''
+}
+```
+
+---
+
+## <a id="removeFavouriteTutor">Remove Favourite Tutor</a>
+
+### Method
+
+PUT
+
+### Endpoint
+
+/student/:id/favourite/remove
+
+### Request body
+
+```
+{
+  tutor_id: string
+}
+```
+
+### Response
+
+Status 202
+
+```
+{
+  email : string
+  name : string
+  id : string
+  subscription_type: ('basic', 'pro', 'max')
+  lastpayment_date: date
+  joined_date: date
+  photo_url: string
+  spoken_language: string[]
+  location: string
+  subscription_expiry: date
+  favourite_tutors: []
+  blocked_tutors: []
+  bio: ''
+}
+```
+
+---
+
+## <a id="replaceFavouriteTutors">Replace Favourite Tutors</a>
+
+### Method
+
+PUT
+
+### Endpoint
+
+/student/:id/favourite/replace
+
+### Request body
+
+```
+{
+  tutor_id: string[]
 }
 ```
 
@@ -278,12 +375,12 @@ GET
 Status 200
 
 ```
-tutor[]
+Tutor[]
 ```
 
 ---
 
-## <a id="blockTutor">Block Tutor</a>
+## <a id="pushBlockTutor">Push Blocked Tutor</a>
 
 ### Method
 
@@ -291,7 +388,7 @@ PUT
 
 ### Endpoint
 
-/student/:id/block
+/student/:id/block/push
 
 ### Request body
 
@@ -321,6 +418,110 @@ Status 202
   blocked_tutors: []
   bio: ''
 }
+```
+
+---
+
+## <a id="removeBlockTutor">Remove Blocked Tutor</a>
+
+### Method
+
+PUT
+
+### Endpoint
+
+/student/:id/block/remove
+
+### Request body
+
+```
+{
+  tutor_id: string
+}
+```
+
+### Response
+
+Status 202
+
+```
+{
+  email : string
+  name : string
+  id : string
+  subscription_type: ('basic', 'pro', 'max')
+  lastpayment_date: date
+  joined_date: date
+  photo_url: string
+  spoken_language: string[]
+  location: string
+  subscription_expiry: date
+  favourite_tutors: []
+  blocked_tutors: []
+  bio: ''
+}
+```
+
+---
+
+## <a id="replaceBlockTutor">Replace Blocked Tutors</a>
+
+### Method
+
+PUT
+
+### Endpoint
+
+/student/:id/block/replace
+
+### Request body
+
+```
+{
+  tutor_id: string[]
+}
+```
+
+### Response
+
+Status 202
+
+```
+{
+  email : string
+  name : string
+  id : string
+  subscription_type: ('basic', 'pro', 'max')
+  lastpayment_date: date
+  joined_date: date
+  photo_url: string
+  spoken_language: string[]
+  location: string
+  subscription_expiry: date
+  favourite_tutors: []
+  blocked_tutors: []
+  bio: ''
+}
+```
+
+---
+
+## <a id="getBlockedTutors">Get Blocked Tutors</a>
+
+### Method
+
+GET
+
+### Endpoint
+
+/student/:id/block
+
+### Response
+
+Status 202
+
+```
+Tutor[]
 ```
 
 ---
@@ -397,7 +598,7 @@ Status 200
   bio: string
   avg_rating: integer
   completed_help_requests: integer
-  tags: json
+  tags: string[]
   programming_languages: json
 }
 ```
@@ -421,17 +622,12 @@ PATCH
   name?: string
   bio?: string
   photo_url?: string
-  tags?: string
+  tags?: string[]
   programming_languages?: string
   spoken_language?: string[]
   location?: string
 }
 ```
-
-> ### 📝 Note
->
-> Send only the fields that you want to update and send the entire content for the field you are updating  
-> E.g. if you are adding a language send an array with all languages (not just the new language)
 
 ### Response
 
@@ -449,7 +645,7 @@ Status 202
   bio: string
   avg_rating: integer
   completed_help_requests: integer
-  tags: json
+  tags: string[]
   programming_languages: json
 }
 ```
@@ -488,7 +684,7 @@ POST
 {
   student_id: string
   description: text
-  tags?: json
+  tags?: string[]
   language: string
   code: text
   favourites_only: boolean
@@ -509,7 +705,7 @@ Status 201
   time_closed: date | null
   rating: integer | null
   feedback_comments: text | null
-  tags: json
+  tags: string[]
   language: string
   code: text
   zoom_url: string
@@ -557,7 +753,7 @@ PATCH
   description?: text
   rating?: integer | null
   feedback_comments?: text | null
-  tags?: json
+  tags?: string[]
   language?: string
   code?: text
   zoom_url?: string
@@ -601,7 +797,7 @@ Status 201
   time_closed: date | null
   rating: integer | null
   feedback_comments: text | null
-  tags: json
+  tags: string[]
   language: string
   code: text
   zoom_url: string
@@ -662,7 +858,7 @@ Status 200
   time_closed: date | null
   rating: integer | null
   feedback_comments: text | null
-  tags: json
+  tags: string[]
   language: string
   code: text
   zoom_url: string
@@ -718,7 +914,7 @@ Status 200
     time_closed: date | null
     rating: integer | null
     feedback_comments: text | null
-    tags: json
+    tags: string[]
     language: string
     code: text
     zoom_url: string
@@ -771,7 +967,7 @@ Status 200
     time_closed: date | null
     rating: integer | null
     feedback_comments: text | null
-    tags: json
+    tags: string[]
     language: string
     code: text
     zoom_url: string
