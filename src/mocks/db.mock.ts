@@ -55,7 +55,7 @@ class studentModel {
         idx = students.indexOf(student);
       }
     });
-    students.splice(idx);
+    students.splice(idx, 1);
   };
   updateStudent = (
     id: string,
@@ -122,7 +122,7 @@ class tutorModel {
         idx = tutors.indexOf(tutor);
       }
     });
-    tutors.splice(idx);
+    tutors.splice(idx, 1);
   };
   updateTutor = (id: string, tutorReq: tutorRequest): Promise<Tutor | null> => {
     let dbRes: Tutor;
@@ -153,7 +153,7 @@ class helpRequestModel {
         idx = helprequests.indexOf(helprequest);
       }
     });
-    helprequests.splice(idx);
+    helprequests.splice(idx, 1);
   };
   updateHelpRequest = (
     id: string,
