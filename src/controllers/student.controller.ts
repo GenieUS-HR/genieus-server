@@ -141,9 +141,6 @@ export async function setFavouriteTutor(req: Request, res: Response) {
     res.status(202);
     res.send(dbRes);
     res.end();
-    // const dbRes = sequelizeConnection.query(
-    //   `UPDATE student SET favourite_tutors = (select array_agg(distinct e) from unnest(favourite_tutors || '{${tutor_id}}') e) WHERE  id = '${studentId}' AND NOT favourite_tutors @> '{${tutor_id}}';`
-    // );
   } catch (error) {
     res.status(500);
     res.send(error);
@@ -154,9 +151,11 @@ export async function setFavouriteTutor(req: Request, res: Response) {
 export async function getBlockTutor(req: Request, res: Response) {
   try {
     const studentId = req.params.id;
-    const dbRes = await db.Student.getBlockTutor(studentId);
+    const { blocked_tutors } = await StudentModel.findOne({
+      where: { id: studentId },
+    });
     res.status(202);
-    res.send(dbRes);
+    res.send(blocked_tutors);
     res.end();
   } catch (error) {
     res.status(500);
@@ -168,8 +167,25 @@ export async function getBlockTutor(req: Request, res: Response) {
 export async function blockTutor(req: Request, res: Response) {
   try {
     const studentId = req.params.id;
-    const studentReq = req.body;
-    const dbRes = await db.Student.blockTutor(studentId, studentReq.tutor_id);
+    const { tutor_id } = req.body;
+    const student = await StudentModel.findOne({
+      where: { id: studentId },
+    });
+    let updatedStudent: [number, Student[]] | null = null;
+    if (!student.blocked_tutors.includes(tutor_id)) {
+      updatedStudent = await StudentModel.update(
+        {
+          blocked_tutors: sequelize.fn(
+            'array_append',
+            sequelize.col('blocked_tutors'),
+            tutor_id
+          ),
+        },
+        { where: { id: studentId }, returning: true }
+      );
+    }
+    const dbRes =
+      updatedStudent && updatedStudent[0] > 0 ? updatedStudent[1][0] : student;
     res.status(202);
     res.send(dbRes);
     res.end();
