@@ -92,3 +92,38 @@ export async function updateHelpRequest(req: Request, res: Response) {
     res.end();
   }
 }
+
+export async function getFilteredHelpRequests(req: Request, res: Response) {
+  try {
+    const { student_id, tutor_id, status, language, limit_responses } =
+      req.query;
+    const dbRes = await db.HelpRequest.getFilteredHelpRequests(
+      student_id,
+      tutor_id,
+      status,
+      language,
+      limit_responses
+    );
+    res.status(202);
+    res.send(dbRes);
+    res.end();
+  } catch (error) {
+    res.status(500);
+    res.send(error);
+    res.end();
+  }
+}
+
+export async function getPendingHelpRequests(req: Request, res: Response) {
+  try {
+    const tutorId = req.params.id;
+    const dbRes = await db.HelpRequest.getPendingHelpRequests(tutorId);
+    res.status(202);
+    res.send(dbRes);
+    res.end();
+  } catch (error) {
+    res.status(500);
+    res.send(error);
+    res.end();
+  }
+}

@@ -9,8 +9,8 @@ const mockStudent: Student = {
   joined_date: new Date('2021-10-08 04:05:06'),
   photo_url: 'https://randomuser.me/api/portraits/men/75.jpg',
   subscription_expiry: new Date('2021-12-08 04:05:06'),
-  favourite_tutors: [],
-  blocked_tutors: [],
+  favourite_tutors: ['Test for Favorite'],
+  blocked_tutors: ['Test for Block'],
   bio: "Hi I'm Brad",
 };
 
