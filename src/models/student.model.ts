@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import sequelize from 'sequelize';
 const { Model, DataTypes } = sequelize;
-import sequelizeConnection from './sequelize';
+import sequelizeConnection from './sequelize.js';
 import Student from '../types/student.d.js';
 
 class StudentModel extends Model<Student> {
