@@ -86,3 +86,68 @@ export async function updateStudent(req: Request, res: Response) {
     res.end();
   }
 }
+
+export async function getFavouriteTutor(req: Request, res: Response) {
+  try {
+    const studentId = req.params.id;
+    const dbRes = await db.Student.getFavouriteTutor(studentId);
+    res.status(202);
+    res.send(dbRes);
+    res.end();
+  } catch (error) {
+    res.status(500);
+    res.send(error);
+    res.end();
+  }
+}
+
+// Which one is better ?
+// 1. Using const { studentId, dir } = req.params;
+// 2. Just this.
+
+export async function setFavouriteTutor(req: Request, res: Response) {
+  try {
+    const studentId = req.params.id;
+    const studentReq = req.body;
+    const dbRes = await db.Student.setFavouriteTutor(
+      studentId,
+      studentReq.tutor_id
+    );
+    res.status(202);
+    res.send(dbRes);
+    res.end();
+  } catch (error) {
+    res.status(500);
+    res.send(error);
+    res.end();
+  }
+}
+
+export async function getBlockTutor(req: Request, res: Response) {
+  try {
+    const studentId = req.params.id;
+    const dbRes = await db.Student.getBlockTutor(studentId);
+    res.status(202);
+    res.send(dbRes);
+    res.end();
+  } catch (error) {
+    res.status(500);
+    res.send(error);
+    res.end();
+  }
+}
+
+export async function blockTutor(req: Request, res: Response) {
+  try {
+    const studentId = req.params.id;
+    const studentReq = req.body;
+    const dbRes = await db.Student.blockTutor(studentId, studentReq.tutor_id);
+    res.status(202);
+    res.send(dbRes);
+    res.end();
+  } catch (error) {
+    res.status(500);
+    res.send(error);
+    res.end();
+  }
+}
