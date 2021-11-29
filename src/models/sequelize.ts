@@ -12,6 +12,11 @@ dotenv.config();
 //   }
 // );
 
-const sequelizeConnection = new Sequelize(process.env.DATABASE_URL);
+const DB_URI =
+  process.env.SSL === 'true'
+    ? `${process.env.DATABASE_URL}?ssl=true`
+    : process.env.DATABASE_URL;
+
+const sequelizeConnection = new Sequelize(DB_URI);
 
 export default sequelizeConnection;
