@@ -1,4 +1,3 @@
-import db from '../mocks/db.mock.js';
 import { Request, Response } from 'express';
 import student from '../types/student.js';
 import StudentModel from '../models/student.model.js';
