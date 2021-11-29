@@ -6,6 +6,7 @@ import router from './router.js';
 import checkUserToken from './auth/check-user-token.js';
 import authenticateUser from './auth/authenticate-user.js';
 import dotenv from 'dotenv';
+import sequelizeConnection from './models/sequelize.js';
 
 dotenv.config();
 
@@ -25,6 +26,17 @@ app.get('/', authenticateUser, (req, res) => {
 app.use('/', router);
 app.use('**', (req, res) => res.sendStatus(404));
 
-app.listen(PORT, () =>
-  console.log(`🚀 server running on http://localhost:${PORT}`)
-);
+async function start() {
+  app.listen(PORT, () => {
+    console.log(`🚀 server running on http://localhost:${PORT}`);
+  });
+  try {
+    await sequelizeConnection.authenticate();
+    await sequelizeConnection.sync({ alter: true });
+    console.log('👍 Connection has been established successfully.');
+  } catch (error) {
+    console.error('👎 Unable to connect to the database:', error);
+  }
+}
+
+start();
