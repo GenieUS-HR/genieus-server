@@ -1,4 +1,4 @@
-type language = 'JavaScript' | 'Python'; // options in dropbox ?
+// type language = 'JavaScript' | 'Python'; // options in dropbox ?
 type status = 'pending' | 'assigned' | 'closed-complete' | 'closed-incomplete';
 type rating = 1 | 2 | 3 | 4 | 5;
 type user = {
@@ -17,7 +17,7 @@ export default interface HelpRequest {
   rating: rating | null;
   feedback_comments: string | null;
   tags: string[] | null;
-  language: language;
+  language: string;
   code: string | null;
   zoom_url: string | null;
   call_length: number;
