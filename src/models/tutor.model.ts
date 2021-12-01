@@ -9,6 +9,8 @@ class TutorModel extends Model<Tutor> {
   public name: string;
   public joined_date: Date;
   public photo_url: string;
+  public spoken_language: string[];
+  public location: string;
   public avg_rating: number;
   public completed_help_requests: number;
   public tags: string[];
@@ -35,6 +37,13 @@ TutorModel.init(
       allowNull: false,
     },
     photo_url: {
+      type: DataTypes.STRING,
+    },
+    spoken_language: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      defaultValue: ['english'],
+    },
+    location: {
       type: DataTypes.STRING,
     },
     avg_rating: {
