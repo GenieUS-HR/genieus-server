@@ -1,4 +1,3 @@
-import db from '../mocks/db.mock.js';
 import { Request, Response } from 'express';
 import helprequest from '../types/helprequest.js';
 import HelpRequestModel from '../models/helprequest.model.js';
@@ -132,11 +131,11 @@ export async function getFilteredHelpRequests(req: Request, res: Response) {
 
 export async function getPendingHelpRequests(req: Request, res: Response) {
   try {
-    const tutorId = req.params.id;
-    const dbRes = await db.HelpRequest.getPendingHelpRequests(tutorId);
-    res.status(202);
-    res.send(dbRes);
-    res.end();
+    // const tutorId = req.params.id;
+    // const dbRes = await db.HelpRequest.getPendingHelpRequests(tutorId);
+    // res.status(202);
+    // res.send(dbRes);
+    // res.end();
   } catch (error) {
     res.status(500);
     res.send(error);
