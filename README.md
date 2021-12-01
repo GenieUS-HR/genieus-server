@@ -59,12 +59,12 @@ POST
 
 ```
 {
-  email : string
-  name : string
-  id : string
+  email: string
+  name: string
+  id: string
   subscription_type: ('basic', 'pro', 'max')
-  photo_url: string
-  spoken_language: string[]
+  photo_url?: string
+  spoken_language?: string[]
   location?: string
 }
 ```
@@ -73,23 +73,7 @@ POST
 
 Status 201
 
-```
-{
-  email : string
-  name : string
-  id : string
-  subscription_type: ('basic', 'pro', 'max')
-  lastpayment_date: date
-  photo_url: string
-  spoken_language: string[]
-  location: string
-  joined_date: date
-  subscription_expiry: date
-  favourite_tutors: []
-  blocked_tutors: []
-  bio: ''
-}
-```
+[Student](#studentType)
 
 ---
 
@@ -107,23 +91,7 @@ GET
 
 Status 200
 
-```
-{
-  email : string
-  name : string
-  id : string
-  subscription_type: ('basic', 'pro', 'max')
-  lastpayment_date: date
-  joined_date: date
-  photo_url: string
-  spoken_language: string[]
-  location: string
-  subscription_expiry: date
-  favourite_tutors: []
-  blocked_tutors: []
-  bio: ''
-}
-```
+[Student[]](#studentType)
 
 ---
 
@@ -158,23 +126,7 @@ PATCH
 
 Status 202
 
-```
-{
-  email : string
-  name : string
-  id : string
-  subscription_type: ('basic', 'pro', 'max')
-  lastpayment_date: date
-  joined_date: date
-  photo_url: string
-  spoken_language: string[]
-  location: string
-  subscription_expiry: date
-  favourite_tutors: []
-  blocked_tutors: []
-  bio: ''
-}
-```
+[Student](#studentType)
 
 ---
 
@@ -198,23 +150,7 @@ TBD - need to understand
 
 Status 202
 
-```
-{
-  email : string
-  name : string
-  id : string
-  subscription_type: ('basic', 'pro', 'max')
-  lastpayment_date: date
-  joined_date: date
-  photo_url: string
-  spoken_language: string[]
-  location: string
-  subscription_expiry: date
-  favourite_tutors: []
-  blocked_tutors: []
-  bio: ''
-}
-```
+TBD
 
 ---
 
@@ -256,23 +192,7 @@ PUT
 
 Status 202
 
-```
-{
-  email : string
-  name : string
-  id : string
-  subscription_type: ('basic', 'pro', 'max')
-  lastpayment_date: date
-  joined_date: date
-  photo_url: string
-  spoken_language: string[]
-  location: string
-  subscription_expiry: date
-  favourite_tutors: []
-  blocked_tutors: []
-  bio: ''
-}
-```
+[Student](#studentType)
 
 ---
 
@@ -298,23 +218,7 @@ PUT
 
 Status 202
 
-```
-{
-  email : string
-  name : string
-  id : string
-  subscription_type: ('basic', 'pro', 'max')
-  lastpayment_date: date
-  joined_date: date
-  photo_url: string
-  spoken_language: string[]
-  location: string
-  subscription_expiry: date
-  favourite_tutors: []
-  blocked_tutors: []
-  bio: ''
-}
-```
+[Student](#studentType)
 
 ---
 
@@ -340,23 +244,7 @@ PUT
 
 Status 202
 
-```
-{
-  email : string
-  name : string
-  id : string
-  subscription_type: ('basic', 'pro', 'max')
-  lastpayment_date: date
-  joined_date: date
-  photo_url: string
-  spoken_language: string[]
-  location: string
-  subscription_expiry: date
-  favourite_tutors: []
-  blocked_tutors: []
-  bio: ''
-}
-```
+[Student](#studentType)
 
 ---
 
@@ -374,9 +262,7 @@ GET
 
 Status 200
 
-```
-Tutor[]
-```
+[Tutor[]](#tutorType)
 
 ---
 
@@ -402,23 +288,7 @@ PUT
 
 Status 202
 
-```
-{
-  email : string
-  name : string
-  id : string
-  subscription_type: ('basic', 'pro', 'max')
-  lastpayment_date: date
-  joined_date: date
-  photo_url: string
-  spoken_language: string[]
-  location: string
-  subscription_expiry: date
-  favourite_tutors: []
-  blocked_tutors: []
-  bio: ''
-}
-```
+[Student](#studentType)
 
 ---
 
@@ -444,23 +314,7 @@ PUT
 
 Status 202
 
-```
-{
-  email : string
-  name : string
-  id : string
-  subscription_type: ('basic', 'pro', 'max')
-  lastpayment_date: date
-  joined_date: date
-  photo_url: string
-  spoken_language: string[]
-  location: string
-  subscription_expiry: date
-  favourite_tutors: []
-  blocked_tutors: []
-  bio: ''
-}
-```
+[Student](#studentType)
 
 ---
 
@@ -486,23 +340,7 @@ PUT
 
 Status 202
 
-```
-{
-  email : string
-  name : string
-  id : string
-  subscription_type: ('basic', 'pro', 'max')
-  lastpayment_date: date
-  joined_date: date
-  photo_url: string
-  spoken_language: string[]
-  location: string
-  subscription_expiry: date
-  favourite_tutors: []
-  blocked_tutors: []
-  bio: ''
-}
-```
+[Student](#studentType)
 
 ---
 
@@ -520,9 +358,7 @@ GET
 
 Status 202
 
-```
-Tutor[]
-```
+[Tutor[]](#tutorType)
 
 ---
 
@@ -543,8 +379,8 @@ POST
   email : string
   name : string
   id : string
-  photo_url: string
-  spoken_language: string[]
+  photo_url?: string
+  spoken_language?: string[]
   location?: string
 }
 ```
@@ -553,22 +389,7 @@ POST
 
 Status 201
 
-```
-{
-  email : string
-  name : string
-  id : string
-  photo_url: string
-  spoken_language: string[]
-  location: string
-  joined_date: date
-  bio: ''
-  avg_rating: null
-  completed_help_requests: 0
-  tags: []
-  programming_languages: []
-}
-```
+[Tutor](#tutorType)
 
 ---
 
@@ -586,22 +407,27 @@ GET
 
 Status 200
 
-```
-{
-  email : string
-  name : string
-  id : string
-  photo_url: string
-  spoken_language: string[]
-  location: string
-  joined_date: date
-  bio: string
-  avg_rating: integer
-  completed_help_requests: integer
-  tags: string[]
-  programming_languages: json
-}
-```
+[Tutor](#tutorType)
+
+---
+
+---
+
+## <a id="getAllTutors">Get All Tutors</a>
+
+### Method
+
+GET
+
+### Endpoint
+
+/tutor
+
+### Response
+
+Status 200
+
+[Tutor[]](#tutorType)
 
 ---
 
@@ -633,22 +459,7 @@ PATCH
 
 Status 202
 
-```
-{
-  email : string
-  name : string
-  id : string
-  photo_url: string
-  spoken_language: string[]
-  location: string
-  joined_date: date
-  bio: string
-  avg_rating: integer
-  completed_help_requests: integer
-  tags: string[]
-  programming_languages: json
-}
-```
+[Tutor](#tutorType)
 
 ---
 
@@ -714,12 +525,12 @@ Status 201
   tutor: {
     tutor_id: string | null
     tutor_name: string
-    tutor_photo_url: string
+    tutor_photo_url?: string
   }
   student: {
     student_id: string
     student_name: string
-    student_photo_url: string
+    student_photo_url?: string
   }
 }
 ```
@@ -805,11 +616,11 @@ Status 201
   favourites_only: boolean
   tutor: {
     tutor_name: string
-    tutor_photo_url: string
+    tutor_photo_url?: string
   }
   student: {
     student_name: string
-    student_photo_url: string
+    student_photo_url?: string
   }
 }
 ```
@@ -866,11 +677,11 @@ Status 200
   favourites_only: boolean
   tutor: {
     tutor_name: string
-    tutor_photo_url: string
+    tutor_photo_url?: string
   }
   student: {
     student_name: string
-    student_photo_url: string
+    student_photo_url?: string
   }
 }
 ```
@@ -922,11 +733,11 @@ Status 200
     favourites_only: boolean
     tutor: {
       tutor_name: string
-      tutor_photo_url: string
+      tutor_photo_url?: string
     }
     student: {
       student_name: string
-      student_photo_url: string
+      student_photo_url?: string
     }
   }
 ]
@@ -975,11 +786,11 @@ Status 200
     favourites_only: boolean
     tutor: {
       tutor_name: string
-      tutor_photo_url: string
+      tutor_photo_url?: string
     }
     student: {
       student_name: string
-      student_photo_url: string
+      student_photo_url?: string
     }
   }
 ]
@@ -1012,3 +823,44 @@ Status 200
 ```
 
 ---
+
+## Types
+
+### <a id="studentType">Student</a>
+
+```
+{
+  email: string;
+  name: string;
+  id: string;
+  joined_date: Date;
+  photo_url?: string;
+  location?: string;
+  bio: string;
+  spoken_language?: string[];
+  subscription_type: string;
+  lastpayment_date: Date;
+  subscription_expiry: Date;
+  favourite_tutors: string[];
+  blocked_tutors: string[];
+}
+```
+
+### <a id="tutorType">Type</a>
+
+```
+{
+  email: string;
+  name: string;
+  id: string;
+  joined_date: Date;
+  photo_url?: string;
+  location?: string;
+  bio: string;
+  spoken_language?: string[];
+  avg_rating: number;
+  completed_help_requests: number;
+  tags: string[];
+  programming_languages: string[];
+}
+```

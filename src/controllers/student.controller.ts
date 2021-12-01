@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import student from '../types/student.js';
+import student, { StudentRequest } from '../types/student.js';
 import StudentModel from '../models/student.model.js';
 import TutorModel from '../models/tutor.model.js';
 import sequelize from 'sequelize';
@@ -40,7 +40,7 @@ export async function getStudent(req: Request, res: Response) {
 
 export async function addStudent(req: Request, res: Response) {
   try {
-    const studentReq = req.body;
+    const studentReq: StudentRequest = req.body;
     const student: student = {
       ...studentReq,
       joined_date: new Date(),
