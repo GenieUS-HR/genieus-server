@@ -2,8 +2,6 @@ import db from '../mocks/db.mock.js';
 import { Request, Response } from 'express';
 import helprequest from '../types/helprequest.js';
 import HelpRequestModel from '../models/helprequest.model.js';
-import sequelize from 'sequelize/dist';
-const { Op } = sequelize;
 
 export async function getAllHelpRequests(req: Request, res: Response) {
   try {
@@ -117,16 +115,14 @@ export async function updateHelpRequest(req: Request, res: Response) {
 
 export async function getFilteredHelpRequests(req: Request, res: Response) {
   try {
-    const { student_id, tutor_id, status, language, limit_responses } =
-      req.query;
-    const dbRes = await HelpRequestModel.findAll({
-      where: {
-        [Op.or]: [{ status: status }, { language: language }],
-      },
-    });
-    res.status(202);
-    res.send(dbRes);
-    res.end();
+    // const { student_id, tutor_id, status, language, limit_responses } =
+    //   req.query;
+    // const dbRes = await HelpRequestModel.findAll({
+    //   where: {},
+    // });
+    // res.status(202);
+    // res.send(dbRes);
+    // res.end();
   } catch (error) {
     res.status(500);
     res.send(error);
