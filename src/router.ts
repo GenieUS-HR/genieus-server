@@ -36,9 +36,9 @@ router.post('/student', addStudent);
 router.delete('/student/:id', deleteStudent);
 router.patch('/student/:id', updateStudent);
 router.get('/student/:id/favourite', getFavouriteTutor);
-router.put('/student/:id/favourite', setFavouriteTutor);
+router.put('/student/:id/favourite/:dir', setFavouriteTutor);
 router.get('/student/:id/block', getBlockTutor);
-router.put('/student/:id/block', blockTutor);
+router.put('/student/:id/block/:dir', blockTutor);
 // [!request is not set yet] router.put('/student/:id/subscribe', extendSubscribe);
 
 router.get('/tutor', getAllTutors);

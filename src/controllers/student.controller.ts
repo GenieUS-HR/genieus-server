@@ -1,7 +1,7 @@
-import db from '../mocks/db.mock.js';
 import { Request, Response } from 'express';
 import student from '../types/student.js';
 import StudentModel from '../models/student.model.js';
+import TutorModel from '../models/tutor.model.js';
 import sequelize from 'sequelize';
 import Student from '../types/student.js';
 
@@ -106,8 +106,12 @@ export async function getFavouriteTutor(req: Request, res: Response) {
     const { favourite_tutors } = await StudentModel.findOne({
       where: { id: studentId },
     });
+    const tutorlist = await TutorModel.findAll({
+      where: { id: favourite_tutors },
+    });
+    console.log(tutorlist);
     res.status(202);
-    res.send(favourite_tutors);
+    res.send(tutorlist);
     res.end();
   } catch (error) {
     res.status(500);
@@ -118,29 +122,73 @@ export async function getFavouriteTutor(req: Request, res: Response) {
 
 export async function setFavouriteTutor(req: Request, res: Response) {
   try {
-    const studentId = req.params.id;
-    const { tutor_id } = req.body;
+    const { id, dir } = req.params;
     const student = await StudentModel.findOne({
-      where: { id: studentId },
+      where: { id: id },
     });
-    let updatedStudent: [number, Student[]] | null = null;
-    if (!student.favourite_tutors.includes(tutor_id)) {
-      updatedStudent = await StudentModel.update(
+    if (dir === 'push') {
+      const { tutor_id } = req.body;
+      let updatedStudent: [number, Student[]] | null = null;
+      if (!student.favourite_tutors.includes(tutor_id)) {
+        updatedStudent = await StudentModel.update(
+          {
+            favourite_tutors: sequelize.fn(
+              'array_append',
+              sequelize.col('favourite_tutors'),
+              tutor_id
+            ),
+          },
+          { where: { id: id }, returning: true }
+        );
+      }
+      const dbRes =
+        updatedStudent && updatedStudent[0] > 0
+          ? updatedStudent[1][0]
+          : student;
+      res.status(202);
+      res.send(dbRes);
+      res.end();
+    } else if (dir === 'remove') {
+      const { tutor_id } = req.body;
+      let updatedStudent: [number, Student[]] | null = null;
+      if (student.favourite_tutors.includes(tutor_id)) {
+        updatedStudent = await StudentModel.update(
+          {
+            favourite_tutors: sequelize.fn(
+              'array_remove',
+              sequelize.col('favourite_tutors'),
+              tutor_id
+            ),
+          },
+          { where: { id: id }, returning: true }
+        );
+      }
+      const dbRes =
+        updatedStudent && updatedStudent[0] > 0
+          ? updatedStudent[1][0]
+          : student;
+      res.status(202);
+      res.send(dbRes);
+      res.end();
+    } else if (dir === 'replace') {
+      const studentReq = req.body;
+      const dbRes = await StudentModel.update(
+        { favourite_tutors: studentReq.tutor_id },
         {
-          favourite_tutors: sequelize.fn(
-            'array_append',
-            sequelize.col('favourite_tutors'),
-            tutor_id
-          ),
-        },
-        { where: { id: studentId }, returning: true }
+          where: { id: id },
+          returning: true,
+        }
       );
+      if (dbRes[0] > 0) {
+        res.status(202);
+        res.send(dbRes[1][0]);
+        res.end();
+      } else {
+        res.status(404);
+        res.send(`Student id ${id} not found`);
+        res.end();
+      }
     }
-    const dbRes =
-      updatedStudent && updatedStudent[0] > 0 ? updatedStudent[1][0] : student;
-    res.status(202);
-    res.send(dbRes);
-    res.end();
   } catch (error) {
     res.status(500);
     res.send(error);
@@ -154,8 +202,11 @@ export async function getBlockTutor(req: Request, res: Response) {
     const { blocked_tutors } = await StudentModel.findOne({
       where: { id: studentId },
     });
+    const tutorlist = await TutorModel.findAll({
+      where: { id: blocked_tutors },
+    });
     res.status(202);
-    res.send(blocked_tutors);
+    res.send(tutorlist);
     res.end();
   } catch (error) {
     res.status(500);
@@ -166,29 +217,73 @@ export async function getBlockTutor(req: Request, res: Response) {
 
 export async function blockTutor(req: Request, res: Response) {
   try {
-    const studentId = req.params.id;
-    const { tutor_id } = req.body;
+    const { id, dir } = req.params;
     const student = await StudentModel.findOne({
-      where: { id: studentId },
+      where: { id: id },
     });
-    let updatedStudent: [number, Student[]] | null = null;
-    if (!student.blocked_tutors.includes(tutor_id)) {
-      updatedStudent = await StudentModel.update(
+    if (dir === 'push') {
+      const { tutor_id } = req.body;
+      let updatedStudent: [number, Student[]] | null = null;
+      if (!student.blocked_tutors.includes(tutor_id)) {
+        updatedStudent = await StudentModel.update(
+          {
+            blocked_tutors: sequelize.fn(
+              'array_append',
+              sequelize.col('blocked_tutors'),
+              tutor_id
+            ),
+          },
+          { where: { id: id }, returning: true }
+        );
+      }
+      const dbRes =
+        updatedStudent && updatedStudent[0] > 0
+          ? updatedStudent[1][0]
+          : student;
+      res.status(202);
+      res.send(dbRes);
+      res.end();
+    } else if (dir === 'remove') {
+      const { tutor_id } = req.body;
+      let updatedStudent: [number, Student[]] | null = null;
+      if (student.blocked_tutors.includes(tutor_id)) {
+        updatedStudent = await StudentModel.update(
+          {
+            blocked_tutors: sequelize.fn(
+              'array_remove',
+              sequelize.col('blocked_tutors'),
+              tutor_id
+            ),
+          },
+          { where: { id: id }, returning: true }
+        );
+      }
+      const dbRes =
+        updatedStudent && updatedStudent[0] > 0
+          ? updatedStudent[1][0]
+          : student;
+      res.status(202);
+      res.send(dbRes);
+      res.end();
+    } else if (dir === 'replace') {
+      const studentReq = req.body;
+      const dbRes = await StudentModel.update(
+        { blocked_tutors: studentReq.tutor_id },
         {
-          blocked_tutors: sequelize.fn(
-            'array_append',
-            sequelize.col('blocked_tutors'),
-            tutor_id
-          ),
-        },
-        { where: { id: studentId }, returning: true }
+          where: { id: id },
+          returning: true,
+        }
       );
+      if (dbRes[0] > 0) {
+        res.status(202);
+        res.send(dbRes[1][0]);
+        res.end();
+      } else {
+        res.status(404);
+        res.send(`Student id ${id} not found`);
+        res.end();
+      }
     }
-    const dbRes =
-      updatedStudent && updatedStudent[0] > 0 ? updatedStudent[1][0] : student;
-    res.status(202);
-    res.send(dbRes);
-    res.end();
   } catch (error) {
     res.status(500);
     res.send(error);

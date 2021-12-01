@@ -1,10 +1,13 @@
 import db from '../mocks/db.mock.js';
 import { Request, Response } from 'express';
 import helprequest from '../types/helprequest.js';
+import HelpRequestModel from '../models/helprequest.model.js';
+import sequelize from 'sequelize/dist';
+const { Op } = sequelize;
 
 export async function getAllHelpRequests(req: Request, res: Response) {
   try {
-    const dbRes = await db.HelpRequest.getAll();
+    const dbRes = await HelpRequestModel.findAll();
     res.status(200);
     res.send(dbRes);
     res.end();
@@ -18,7 +21,9 @@ export async function getAllHelpRequests(req: Request, res: Response) {
 export async function getHelpRequest(req: Request, res: Response) {
   try {
     const helprequestId = req.params.id;
-    const dbRes = await db.HelpRequest.getHelpRequest(helprequestId);
+    const dbRes = await HelpRequestModel.findOne({
+      where: { id: helprequestId },
+    });
     if (dbRes) {
       res.status(200);
       res.send(dbRes);
@@ -51,7 +56,7 @@ export async function addHelpRequest(req: Request, res: Response) {
       call_length: null,
       tutor: null,
     };
-    const dbRes = await db.HelpRequest.addHelpRequest(helprequest);
+    const dbRes = await HelpRequestModel.create(helprequest);
     res.status(201);
     res.send(dbRes);
     res.end();
@@ -65,7 +70,7 @@ export async function addHelpRequest(req: Request, res: Response) {
 export async function deleteHelpRequest(req: Request, res: Response) {
   try {
     const helprequestId = req.params.id;
-    await db.HelpRequest.deleteHelpRequest(helprequestId);
+    await HelpRequestModel.destroy({ where: { id: helprequestId } });
     res.sendStatus(204);
     res.end();
   } catch (error) {
@@ -79,12 +84,29 @@ export async function updateHelpRequest(req: Request, res: Response) {
   try {
     const helprequestId = req.params.id;
     const helprequestReq = req.body;
-    const dbRes = await db.HelpRequest.updateHelpRequest(
-      helprequestId,
-      helprequestReq
-    );
+    const original = await HelpRequestModel.findOne({
+      where: { id: helprequestId },
+    });
+    if (Object.keys(helprequestReq).includes('status')) {
+      if (helprequestReq.status === 'assigned') {
+        // TODO need to create zoom link !
+        helprequestReq.time_accepted = new Date();
+      } else if (
+        helprequestReq.status === 'closed-complete' ||
+        helprequestReq.status === 'closed-incomplete'
+      ) {
+        helprequestReq.time_closed = new Date();
+        const start = new Date(original.time_accepted).getTime();
+        const end = new Date(helprequestReq.time_closed).getTime();
+        helprequestReq.call_length = Math.floor((end - start) / 1000);
+      }
+    }
+    const dbRes = await HelpRequestModel.update(helprequestReq, {
+      where: { id: helprequestId },
+      returning: true,
+    });
     res.status(202);
-    res.send(dbRes);
+    res.send(dbRes[1][0]);
     res.end();
   } catch (error) {
     res.status(500);
@@ -97,13 +119,11 @@ export async function getFilteredHelpRequests(req: Request, res: Response) {
   try {
     const { student_id, tutor_id, status, language, limit_responses } =
       req.query;
-    const dbRes = await db.HelpRequest.getFilteredHelpRequests(
-      student_id,
-      tutor_id,
-      status,
-      language,
-      limit_responses
-    );
+    const dbRes = await HelpRequestModel.findAll({
+      where: {
+        [Op.or]: [{ status: status }, { language: language }],
+      },
+    });
     res.status(202);
     res.send(dbRes);
     res.end();
