@@ -4,36 +4,36 @@ Codeworks seniors London - thesis project Nov 2021
 
 ## API Endpoints summary
 
-| API                                                  | Method | Endpoint                       | Status |
-| :--------------------------------------------------- | :----- | :----------------------------- | -----: |
+| API                                                  | Method | Endpoint                       | Status | Deployed? |
+| :--------------------------------------------------- | :----- | :----------------------------- | -----: | --------: |
 | 📝 Students                                          |
-| [Add Student](#addStudent)                           | POST   | /student                       |    201 |
-| [Get Student](#getStudent)                           | GET    | /student/:id                   |    200 |
-| [Update Student](#updateStudent)                     | PATCH  | /student/:id                   |    202 |
-| [Extend Subscription](#extendSubscription)           | PUT    | /student/:id/subscribe         |    202 |
-| [Delete Student](#deleteStudent)                     | DELETE | /student/:id                   |    204 |
-| [Push Favourite Tutor](#pushFavouriteTutor)          | PUT    | /student/:id/favourite/push    |    202 |
-| [Remove Favourite Tutor](#removeFavouriteTutor)      | PUT    | /student/:id/favourite/remove  |    202 |
-| [Replace Favourite Tutors](#replaceFavouriteTutors)  | PUT    | /student/:id/favourite/replace |    202 |
-| [Get Favourite Tutors](#getFavouriteTutors)          | GET    | /student/:id/favourite         |    200 |
-| [Push Blocked Tutor](#pushBlockTutor)                | PUT    | /student/:id/block/push        |    202 |
-| [Remove Blocked Tutor](#removeBlockTutor)            | PUT    | /student/:id/block/remove      |    202 |
-| [Replace Blocked Tutors](#replaceBlockTutor)         | PUT    | /student/:id/block/replace     |    202 |
-| [Get Blocked Tutors](#getBlockedTutors)              | GET    | /student/:id/block             |    202 |
+| [Add Student](#addStudent)                           | POST   | /student                       |    201 |         Y |
+| [Get Student](#getStudent)                           | GET    | /student/:id                   |    200 |         Y |
+| [Update Student](#updateStudent)                     | PATCH  | /student/:id                   |    202 |         Y |
+| [Extend Subscription](#extendSubscription)           | PUT    | /student/:id/subscribe         |    202 |         N |
+| [Delete Student](#deleteStudent)                     | DELETE | /student/:id                   |    204 |         Y |
+| [Push Favourite Tutor](#pushFavouriteTutor)          | PUT    | /student/:id/favourite/push    |    202 |         Y |
+| [Remove Favourite Tutor](#removeFavouriteTutor)      | PUT    | /student/:id/favourite/remove  |    202 |         Y |
+| [Replace Favourite Tutors](#replaceFavouriteTutors)  | PUT    | /student/:id/favourite/replace |    202 |         Y |
+| [Get Favourite Tutors](#getFavouriteTutors)          | GET    | /student/:id/favourite         |    200 |         Y |
+| [Push Blocked Tutor](#pushBlockTutor)                | PUT    | /student/:id/block/push        |    202 |         Y |
+| [Remove Blocked Tutor](#removeBlockTutor)            | PUT    | /student/:id/block/remove      |    202 |         Y |
+| [Replace Blocked Tutors](#replaceBlockTutor)         | PUT    | /student/:id/block/replace     |    202 |         Y |
+| [Get Blocked Tutors](#getBlockedTutors)              | GET    | /student/:id/block             |    202 |         Y |
 | 🧑‍🏫 Tutors                                         |
-| [Add Tutor](#addTutor)                               | POST   | /tutor                         |    201 |
-| [Get Tutor](#getTutor)                               | GET    | /tutor/:id                     |    200 |
-| [Update Tutor](#updateTutor)                         | PATCH  | /tutor/:id                     |    202 |
-| [Delete Tutor](#deleteTutor)                         | DELETE | /tutor/:id                     |    204 |
+| [Add Tutor](#addTutor)                               | POST   | /tutor                         |    201 |         Y |
+| [Get Tutor](#getTutor)                               | GET    | /tutor/:id                     |    200 |         Y |
+| [Update Tutor](#updateTutor)                         | PATCH  | /tutor/:id                     |    202 |         Y |
+| [Delete Tutor](#deleteTutor)                         | DELETE | /tutor/:id                     |    204 |         Y |
 | 🙋‍♀️ Help Requests                                     |
-| [Add Help Request](#addHelpRequest)                  | POST   | /helprequest                   |    201 |
-| [Update Help Request](#updateHelpRequest)            | PATCH  | /helprequest/:id               |    202 |
-| [Delete Help Request](#closeHelpRequest)             | DELETE | /helprequest/:id               |    204 |
-| [Get Help Request](#getHelpRequest)                  | GET    | /helprequest/:id               |    200 |
-| [Get Help Requests](#getHelpRequests)                | GET    | /helprequest?parameter=value   |    200 |
-| [Get Pending Help Requests](#getPendingHelpRequests) | GET    | /helprequest/pending/:tutor_id |    200 |
+| [Add Help Request](#addHelpRequest)                  | POST   | /helprequest                   |    201 |         Y |
+| [Update Help Request](#updateHelpRequest)            | PATCH  | /helprequest/:id               |    202 |         Y |
+| [Delete Help Request](#closeHelpRequest)             | DELETE | /helprequest/:id               |    204 |         Y |
+| [Get Help Request](#getHelpRequest)                  | GET    | /helprequest/:id               |    200 |         Y |
+| [Get Help Requests](#getHelpRequests)                | GET    | /helprequest?parameter=value   |    200 |         N |
+| [Get Pending Help Requests](#getPendingHelpRequests) | GET    | /helprequest/pending/:tutor_id |    200 |         N |
 | 💰 Subscriptions                                     |
-| [Get Subscriptions](#getSubscriptions)               | GET    | /subscription                  |    200 |
+| [Get Subscriptions](#getSubscriptions)               | GET    | /subscription                  |    200 |         Y |
 
 ---
 
