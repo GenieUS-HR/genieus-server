@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import tutor from '../types/tutor.js';
+import tutor, { TutorRequest } from '../types/tutor.js';
 import TutorModel from '../models/tutor.model.js';
 
 export async function getAllTutors(req: Request, res: Response) {
@@ -37,9 +37,11 @@ export async function getTutor(req: Request, res: Response) {
 
 export async function addTutor(req: Request, res: Response) {
   try {
-    const tutorReq = req.body;
+    const tutorReq: TutorRequest = req.body;
     const tutor: tutor = {
       ...tutorReq,
+      completed_help_requests: 0,
+      avg_rating: null,
       joined_date: new Date(),
       bio: '',
       tags: [],
