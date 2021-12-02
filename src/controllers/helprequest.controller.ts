@@ -99,6 +99,37 @@ export async function deleteHelpRequest(req: Request, res: Response) {
   }
 }
 
+// after feedback is submitted by student, recalc avg rating and increase # closed HR
+// Faster approach to update tutor rating without querying all help requests (but not as reliaable)
+// if duplicate requests are submitted ratings and completed would be incorrect
+// async function updateTutorAfterRating(tutor_id: string, rating: number) {
+//   const tutor = await TutorModel.findOne({ where: { id: tutor_id } });
+//   const newAverageRating =
+//     (tutor.avg_rating * tutor.completed_help_requests + rating) /
+//     (tutor.completed_help_requests + 1);
+//   TutorModel.update(
+//     {
+//       avg_rating: newAverageRating,
+//       completed_help_requests: tutor.completed_help_requests + 1,
+//     },
+//     { where: { id: tutor_id } }
+//   );
+// }
+async function updateTutorAvgRating(tutor_id: string) {
+  const helpRequests = await HelpRequestModel.findAll({
+    attributes: ['rating'],
+    where: { tutor_id },
+  });
+  const avgRating = helpRequests.reduce((acc, curr) => acc + curr.rating, 0);
+  TutorModel.update(
+    {
+      avg_rating: avgRating,
+      completed_help_requests: helpRequests.length,
+    },
+    { where: { id: tutor_id } }
+  );
+}
+
 export async function updateHelpRequest(req: Request, res: Response) {
   try {
     const helprequestId = req.params.id;
@@ -124,6 +155,7 @@ export async function updateHelpRequest(req: Request, res: Response) {
       where: { id: helprequestId },
       returning: true,
     });
+    updateTutorAvgRating(original.tutor_id);
     res.status(202);
     res.send(dbRes[1][0]);
     res.end();
