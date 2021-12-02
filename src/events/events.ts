@@ -1,19 +1,17 @@
 import { Server, Socket } from 'socket.io';
-import InMemorySessionStore from './session-store.js';
-
-const sessionStore = new InMemorySessionStore();
 
 const userHandler = (io: Server, socket: Socket) => {
-  // PERSIST SESSION
-  sessionStore.saveSession(socket.data.sessionID, {
-    userID: socket.data.userID,
-    sessionID: socket.data.sessionID,
-    connected: true,
-  });
+  // join user's room
+  socket.join(socket.data.userID);
 
-  socket.emit('session', {
-    sessionID: socket.data.sessionID,
-    userID: socket.data.userID,
+  socket.emit('user logged on', socket.data.userID);
+
+  socket.on('disconnect', async () => {
+    const matchingSockets = await io.in(socket.data.userID).allSockets();
+    const isDisconnected = matchingSockets.size === 0;
+    if (isDisconnected) {
+      socket.broadcast.emit('user disconnected', socket.data.userID);
+    }
   });
 };
 

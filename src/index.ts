@@ -9,6 +9,8 @@ import checkUserToken from './auth/check-user-token.js';
 import authenticateUser from './auth/authenticate-user.js';
 import dotenv from 'dotenv';
 import sequelizeConnection from './models/sequelize.js';
+import userHandshake from './events/user-handshake.js';
+import userHandler from './events/events.js';
 
 dotenv.config();
 
@@ -20,9 +22,11 @@ const io = new Server(server, {
   cors: { origin: '*' },
 });
 
-// io.on('connection', (socket) => {
+io.use(userHandshake);
 
-// })
+io.on('connection', (socket) => {
+  userHandler(io, socket);
+});
 
 app.use(cors());
 app.use(morgan('short'));
