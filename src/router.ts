@@ -18,7 +18,6 @@ import {
   updateTutor,
 } from './controllers/tutor.controller.js';
 import {
-  getAllHelpRequests,
   getHelpRequest,
   addHelpRequest,
   deleteHelpRequest,
@@ -47,13 +46,12 @@ router.post('/tutor', addTutor);
 router.delete('/tutor/:id', deleteTutor);
 router.patch('/tutor/:id', updateTutor);
 
-router.get('/helprequest', getAllHelpRequests);
+router.get('/helprequest', getFilteredHelpRequests);
 router.get('/helprequest/:id', getHelpRequest);
 router.post('/helprequest', addHelpRequest);
 router.delete('/helprequest/:id', deleteHelpRequest);
 router.patch('/helprequest/:id', updateHelpRequest);
-router.get('/helprequest?parameter=value', getFilteredHelpRequests);
-router.get('/helprequest/:tutor_id', getPendingHelpRequests);
+router.get('/helprequest/pending/:tutor_id', getPendingHelpRequests);
 
 router.get('/subscription', getSubscription);
 

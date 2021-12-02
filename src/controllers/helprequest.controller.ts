@@ -1,26 +1,23 @@
 import { Request, Response } from 'express';
-import helprequest from '../types/helprequest.js';
+import { randomUUID } from 'crypto';
+import sequelize from 'sequelize';
+const { Op } = sequelize;
+import HelpRequest, {
+  HelpRequestRequest,
+  HelpRequestResponse,
+  HelpRequestUpdate,
+} from '../types/helprequest.js';
 import HelpRequestModel from '../models/helprequest.model.js';
-
-export async function getAllHelpRequests(req: Request, res: Response) {
-  try {
-    const dbRes = await HelpRequestModel.findAll();
-    res.status(200);
-    res.send(dbRes);
-    res.end();
-  } catch (error) {
-    res.status(500);
-    res.send(error);
-    res.end();
-  }
-}
+import TutorModel from '../models/tutor.model.js';
+import StudentModel from '../models/student.model.js';
+import createZoom from '../api/create-zoom-meeting.js';
 
 export async function getHelpRequest(req: Request, res: Response) {
   try {
     const helprequestId = req.params.id;
-    const dbRes = await HelpRequestModel.findOne({
+    const dbRes = (await HelpRequestModel.findOne({
       where: { id: helprequestId },
-    });
+    })) as HelpRequestResponse;
     if (dbRes) {
       res.status(200);
       res.send(dbRes);
@@ -39,10 +36,10 @@ export async function getHelpRequest(req: Request, res: Response) {
 
 export async function addHelpRequest(req: Request, res: Response) {
   try {
-    const helpreqeustReq = req.body;
-    const helprequest: helprequest = {
+    const helpreqeustReq: HelpRequestRequest = req.body;
+    const helprequest: HelpRequest = {
       ...helpreqeustReq,
-      id: Math.random().toString(36).substr(2, 16), // how to set id?
+      id: randomUUID(),
       status: 'pending',
       time_opened: new Date(),
       time_accepted: null,
@@ -51,9 +48,11 @@ export async function addHelpRequest(req: Request, res: Response) {
       feedback_comments: null,
       zoom_url: null,
       call_length: null,
-      tutor: null,
+      tutor_id: null,
     };
-    const dbRes = await HelpRequestModel.create(helprequest);
+    const dbRes = (await HelpRequestModel.create(
+      helprequest
+    )) as HelpRequestResponse;
     res.status(201);
     res.send(dbRes);
     res.end();
@@ -77,17 +76,49 @@ export async function deleteHelpRequest(req: Request, res: Response) {
   }
 }
 
+// after feedback is submitted by student, recalc avg rating and increase # closed HR
+// Faster approach to update tutor rating without querying all help requests (but not as reliaable)
+// if duplicate requests are submitted ratings and completed would be incorrect
+// async function updateTutorAfterRating(tutor_id: string, rating: number) {
+//   const tutor = await TutorModel.findOne({ where: { id: tutor_id } });
+//   const newAverageRating =
+//     (tutor.avg_rating * tutor.completed_help_requests + rating) /
+//     (tutor.completed_help_requests + 1);
+//   TutorModel.update(
+//     {
+//       avg_rating: newAverageRating,
+//       completed_help_requests: tutor.completed_help_requests + 1,
+//     },
+//     { where: { id: tutor_id } }
+//   );
+// }
+async function updateTutorAvgRating(tutor_id: string) {
+  const helpRequests = await HelpRequestModel.findAll({
+    attributes: ['rating'],
+    where: { tutor_id },
+  });
+  const avgRating = helpRequests.reduce((acc, curr) => acc + curr.rating, 0);
+  TutorModel.update(
+    {
+      avg_rating: avgRating,
+      completed_help_requests: helpRequests.length,
+    },
+    { where: { id: tutor_id } }
+  );
+}
+
 export async function updateHelpRequest(req: Request, res: Response) {
   try {
     const helprequestId = req.params.id;
-    const helprequestReq = req.body;
+    const helprequestReq: HelpRequestUpdate = req.body;
     const original = await HelpRequestModel.findOne({
       where: { id: helprequestId },
     });
     if (Object.keys(helprequestReq).includes('status')) {
       if (helprequestReq.status === 'assigned') {
-        // TODO need to create zoom link !
         helprequestReq.time_accepted = new Date();
+        const zoomlink = await createZoom();
+        helprequestReq.zoom_url = zoomlink;
       } else if (
         helprequestReq.status === 'closed-complete' ||
         helprequestReq.status === 'closed-incomplete'
@@ -102,6 +133,7 @@ export async function updateHelpRequest(req: Request, res: Response) {
       where: { id: helprequestId },
       returning: true,
     });
+    updateTutorAvgRating(original.tutor_id);
     res.status(202);
     res.send(dbRes[1][0]);
     res.end();
@@ -112,16 +144,32 @@ export async function updateHelpRequest(req: Request, res: Response) {
   }
 }
 
+type HelpRequestParams = {
+  limit_responses?: number;
+  student_id?: HelpRequestModel['student_id'];
+  tutor_id?: HelpRequestModel['tutor_id'];
+  language?: HelpRequestModel['language'];
+  status?: HelpRequestModel['status'];
+};
+
 export async function getFilteredHelpRequests(req: Request, res: Response) {
   try {
-    // const { student_id, tutor_id, status, language, limit_responses } =
-    //   req.query;
-    // const dbRes = await HelpRequestModel.findAll({
-    //   where: {},
-    // });
-    // res.status(202);
-    // res.send(dbRes);
-    // res.end();
+    const { limit_responses, ...query }: HelpRequestParams = req.query;
+    let dbRes;
+    if (typeof limit_responses === 'number') {
+      dbRes = await HelpRequestModel.findAll({
+        where: query,
+        limit: limit_responses,
+        order: [['time_opened', 'ASC']],
+      });
+    } else {
+      dbRes = await HelpRequestModel.findAll({
+        where: query,
+      });
+    }
+    res.status(202);
+    res.send(dbRes);
+    res.end();
   } catch (error) {
     res.status(500);
     res.send(error);
@@ -131,14 +179,55 @@ export async function getFilteredHelpRequests(req: Request, res: Response) {
 
 export async function getPendingHelpRequests(req: Request, res: Response) {
   try {
-    // const tutorId = req.params.id;
-    // const dbRes = await db.HelpRequest.getPendingHelpRequests(tutorId);
-    // res.status(202);
-    // res.send(dbRes);
-    // res.end();
+    const tutor_id = req.params.tutor_id;
+    const tutor = await TutorModel.findOne({
+      attributes: ['programming_languages'],
+      where: { id: tutor_id },
+    });
+    const blockingStudents = await getBlockingStudents(tutor_id);
+    const followingStudents = await getFollowingStudents(tutor_id);
+    const pendingHelpRequests = await HelpRequestModel.findAll({
+      where: {
+        status: 'pending',
+        language: { [Op.in]: tutor.programming_languages },
+        student_id: { [Op.notIn]: blockingStudents },
+      },
+      order: [['time_opened', 'ASC']],
+    });
+    const availableHelpRequests = pendingHelpRequests.filter((hr) =>
+      hr.favourites_only ? followingStudents.includes(hr.student_id) : true
+    );
+    res.status(200);
+    res.send(availableHelpRequests);
+    res.end();
   } catch (error) {
     res.status(500);
     res.send(error);
     res.end();
   }
+}
+
+// check if any students blocked the tutor
+async function getBlockingStudents(tutor_id: string) {
+  const blockingStudents = await StudentModel.findAll({
+    attributes: ['id'],
+    where: {
+      blocked_tutors: {
+        [Op.contains]: [tutor_id],
+      },
+    },
+  });
+  return blockingStudents.map((student) => student.id);
+}
+
+async function getFollowingStudents(tutor_id: string) {
+  const followingStudents = await StudentModel.findAll({
+    attributes: ['id'],
+    where: {
+      favourite_tutors: {
+        [Op.contains]: [tutor_id],
+      },
+    },
+  });
+  return followingStudents.map((student) => student.id);
 }
