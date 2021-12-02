@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { randomUUID } from 'crypto';
+import sequelize from 'sequelize';
+const { Op } = sequelize;
 import HelpRequest, {
   HelpRequestRequest,
   HelpRequestResponse,
@@ -7,6 +9,7 @@ import HelpRequest, {
 } from '../types/helprequest.js';
 import HelpRequestModel from '../models/helprequest.model.js';
 import TutorModel from '../models/tutor.model.js';
+import StudentModel from '../models/student.model.js';
 
 export async function getHelpRequest(req: Request, res: Response) {
   try {
@@ -172,15 +175,62 @@ export async function getFilteredHelpRequests(req: Request, res: Response) {
 }
 
 export async function getPendingHelpRequests(req: Request, res: Response) {
+  console.log('get pending help requests');
   try {
-    // const tutorId = req.params.id;
-    // const dbRes = await db.HelpRequest.getPendingHelpRequests(tutorId);
-    // res.status(202);
-    // res.send(dbRes);
-    // res.end();
+    const tutor_id = req.params.tutor_id;
+    console.log(tutor_id);
+    const tutor = await TutorModel.findOne({
+      attributes: ['programming_languages'],
+      where: { id: tutor_id },
+    });
+    console.log('tutor', tutor);
+    const blockingStudents = await getBlockingStudents(tutor_id);
+    console.log('blocking', blockingStudents);
+    const followingStudents = await getFollowingStudents(tutor_id);
+    console.log('following', followingStudents);
+    const pendingHelpRequests = await HelpRequestModel.findAll({
+      where: {
+        status: 'pending',
+        language: { [Op.in]: tutor.programming_languages },
+        student_id: { [Op.notIn]: blockingStudents },
+      },
+    });
+    console.log('pending', pendingHelpRequests);
+    const availableHelpRequests = pendingHelpRequests.filter((hr) =>
+      hr.favourites_only ? followingStudents.includes(hr.student_id) : true
+    );
+    console.log('available', availableHelpRequests);
+    res.status(200);
+    res.send(availableHelpRequests);
+    res.end();
   } catch (error) {
     res.status(500);
     res.send(error);
     res.end();
   }
+}
+
+// check if any students blocked the tutor
+async function getBlockingStudents(tutor_id: string) {
+  const blockingStudents = await StudentModel.findAll({
+    attributes: ['id'],
+    where: {
+      blocked_tutors: {
+        [Op.contains]: [tutor_id],
+      },
+    },
+  });
+  return blockingStudents.map((student) => student.id);
+}
+
+async function getFollowingStudents(tutor_id: string) {
+  const followingStudents = await StudentModel.findAll({
+    attributes: ['id'],
+    where: {
+      favourite_tutors: {
+        [Op.contains]: [tutor_id],
+      },
+    },
+  });
+  return followingStudents.map((student) => student.id);
 }

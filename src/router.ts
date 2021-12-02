@@ -51,7 +51,7 @@ router.get('/helprequest/:id', getHelpRequest);
 router.post('/helprequest', addHelpRequest);
 router.delete('/helprequest/:id', deleteHelpRequest);
 router.patch('/helprequest/:id', updateHelpRequest);
-router.get('/helprequest/:tutor_id', getPendingHelpRequests);
+router.get('/helprequest/pending/:tutor_id', getPendingHelpRequests);
 
 router.get('/subscription', getSubscription);
 
