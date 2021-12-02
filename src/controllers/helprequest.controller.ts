@@ -10,6 +10,7 @@ import HelpRequest, {
 import HelpRequestModel from '../models/helprequest.model.js';
 import TutorModel from '../models/tutor.model.js';
 import StudentModel from '../models/student.model.js';
+import createZoom from '../api/create-zoom-meeting.js';
 
 export async function getHelpRequest(req: Request, res: Response) {
   try {
@@ -115,8 +116,9 @@ export async function updateHelpRequest(req: Request, res: Response) {
     });
     if (Object.keys(helprequestReq).includes('status')) {
       if (helprequestReq.status === 'assigned') {
-        // TODO need to create zoom link !
         helprequestReq.time_accepted = new Date();
+        const zoomlink = await createZoom();
+        helprequestReq.zoom_url = zoomlink;
       } else if (
         helprequestReq.status === 'closed-complete' ||
         helprequestReq.status === 'closed-incomplete'
@@ -158,6 +160,7 @@ export async function getFilteredHelpRequests(req: Request, res: Response) {
       dbRes = await HelpRequestModel.findAll({
         where: query,
         limit: limit_responses,
+        order: [['time_opened', 'ASC']],
       });
     } else {
       dbRes = await HelpRequestModel.findAll({
