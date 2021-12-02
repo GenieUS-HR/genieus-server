@@ -7,33 +7,6 @@ import HelpRequest, {
 } from '../types/helprequest.js';
 import HelpRequestModel from '../models/helprequest.model.js';
 import TutorModel from '../models/tutor.model.js';
-import StudentModel from '../models/student.model.js';
-
-export async function getAllHelpRequests(req: Request, res: Response) {
-  try {
-    const dbRes = (await HelpRequestModel.findAll({
-      include: [
-        {
-          model: StudentModel,
-          as: 'student',
-          attributes: ['id', 'name', 'photo_url'],
-        },
-        {
-          model: TutorModel,
-          as: 'tutor',
-          attributes: ['id', 'name', 'photo_url'],
-        },
-      ],
-    })) as HelpRequestResponse[];
-    res.status(200);
-    res.send(dbRes);
-    res.end();
-  } catch (error) {
-    res.status(500);
-    res.send(error);
-    res.end();
-  }
-}
 
 export async function getHelpRequest(req: Request, res: Response) {
   try {
@@ -166,16 +139,31 @@ export async function updateHelpRequest(req: Request, res: Response) {
   }
 }
 
+type HelpRequestParams = {
+  limit_responses?: number;
+  student_id?: HelpRequestModel['student_id'];
+  tutor_id?: HelpRequestModel['tutor_id'];
+  language?: HelpRequestModel['language'];
+  status?: HelpRequestModel['status'];
+};
+
 export async function getFilteredHelpRequests(req: Request, res: Response) {
   try {
-    // const { student_id, tutor_id, status, language, limit_responses } =
-    //   req.query;
-    // const dbRes = await HelpRequestModel.findAll({
-    //   where: {},
-    // });
-    // res.status(202);
-    // res.send(dbRes);
-    // res.end();
+    const { limit_responses, ...query }: HelpRequestParams = req.query;
+    let dbRes;
+    if (typeof limit_responses === 'number') {
+      dbRes = await HelpRequestModel.findAll({
+        where: query,
+        limit: limit_responses,
+      });
+    } else {
+      dbRes = await HelpRequestModel.findAll({
+        where: query,
+      });
+    }
+    res.status(202);
+    res.send(dbRes);
+    res.end();
   } catch (error) {
     res.status(500);
     res.send(error);

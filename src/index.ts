@@ -17,6 +17,7 @@ const app = Express();
 app.use(cors());
 app.use(morgan('short'));
 app.use(helmet());
+app.use(Express.urlencoded());
 app.use(Express.json());
 app.use(checkUserToken);
 
