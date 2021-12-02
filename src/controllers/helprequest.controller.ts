@@ -175,31 +175,25 @@ export async function getFilteredHelpRequests(req: Request, res: Response) {
 }
 
 export async function getPendingHelpRequests(req: Request, res: Response) {
-  console.log('get pending help requests');
   try {
     const tutor_id = req.params.tutor_id;
-    console.log(tutor_id);
     const tutor = await TutorModel.findOne({
       attributes: ['programming_languages'],
       where: { id: tutor_id },
     });
-    console.log('tutor', tutor);
     const blockingStudents = await getBlockingStudents(tutor_id);
-    console.log('blocking', blockingStudents);
     const followingStudents = await getFollowingStudents(tutor_id);
-    console.log('following', followingStudents);
     const pendingHelpRequests = await HelpRequestModel.findAll({
       where: {
         status: 'pending',
         language: { [Op.in]: tutor.programming_languages },
         student_id: { [Op.notIn]: blockingStudents },
       },
+      order: [['time_opened', 'ASC']],
     });
-    console.log('pending', pendingHelpRequests);
     const availableHelpRequests = pendingHelpRequests.filter((hr) =>
       hr.favourites_only ? followingStudents.includes(hr.student_id) : true
     );
-    console.log('available', availableHelpRequests);
     res.status(200);
     res.send(availableHelpRequests);
     res.end();
