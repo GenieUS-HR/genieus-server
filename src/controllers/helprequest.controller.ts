@@ -1,10 +1,41 @@
 import { Request, Response } from 'express';
 import helprequest from '../types/helprequest.js';
 import HelpRequestModel from '../models/helprequest.model.js';
+import TutorModel from '../models/tutor.model.js';
+import StudentModel from '../models/student.model.js';
+
+// include student/tutor name and photo in the response
+// async function attachTutor(tutor_id: string) {
+//   const { id, name, photo_url } = await TutorModel.findOne({
+//     attributes: ['id', 'name', 'photo_url'],
+//     where: { id: tutor_id },
+//   });
+//   return { id, name, photo_url };
+// }
+// async function attachStudent(student_id: string) {
+//   const { id, name, photo_url } = await StudentModel.findOne({
+//     attributes: ['id', 'name', 'photo_url'],
+//     where: { id: student_id },
+//   });
+//   return { id, name, photo_url };
+// }
 
 export async function getAllHelpRequests(req: Request, res: Response) {
   try {
-    const dbRes = await HelpRequestModel.findAll();
+    const dbRes = await HelpRequestModel.findAll({
+      include: [
+        {
+          model: StudentModel,
+          as: 'student',
+          attributes: ['id', 'name', 'photo_url'],
+        },
+        {
+          model: TutorModel,
+          as: 'tutor',
+          attributes: ['id', 'name', 'photo_url'],
+        },
+      ],
+    });
     res.status(200);
     res.send(dbRes);
     res.end();
