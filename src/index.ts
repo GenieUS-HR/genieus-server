@@ -2,6 +2,8 @@ import Express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 import router from './router.js';
 import checkUserToken from './auth/check-user-token.js';
 import authenticateUser from './auth/authenticate-user.js';
@@ -13,6 +15,14 @@ dotenv.config();
 const PORT = process.env.PORT || 8000;
 
 const app = Express();
+const server = createServer(app);
+const io = new Server(server, {
+  cors: { origin: '*' },
+});
+
+// io.on('connection', (socket) => {
+
+// })
 
 app.use(cors());
 app.use(morgan('short'));
@@ -28,7 +38,7 @@ app.use('/', router);
 app.use('**', (req, res) => res.sendStatus(404));
 
 async function start() {
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`🚀 server running on http://localhost:${PORT}`);
   });
   try {

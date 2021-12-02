@@ -17,6 +17,18 @@ export async function getHelpRequest(req: Request, res: Response) {
     const helprequestId = req.params.id;
     const dbRes = (await HelpRequestModel.findOne({
       where: { id: helprequestId },
+      include: [
+        {
+          model: StudentModel,
+          as: 'student',
+          attributes: ['id', 'name', 'photo_url'],
+        },
+        {
+          model: TutorModel,
+          as: 'tutor',
+          attributes: ['id', 'name', 'photo_url'],
+        },
+      ],
     })) as HelpRequestResponse;
     if (dbRes) {
       res.status(200);
@@ -50,9 +62,24 @@ export async function addHelpRequest(req: Request, res: Response) {
       call_length: null,
       tutor_id: null,
     };
-    const dbRes = (await HelpRequestModel.create(
+    const createdHR = (await HelpRequestModel.create(
       helprequest
     )) as HelpRequestResponse;
+    const dbRes = await HelpRequestModel.findOne({
+      where: { id: createdHR.id },
+      include: [
+        {
+          model: StudentModel,
+          as: 'student',
+          attributes: ['id', 'name', 'photo_url'],
+        },
+        {
+          model: TutorModel,
+          as: 'tutor',
+          attributes: ['id', 'name', 'photo_url'],
+        },
+      ],
+    });
     res.status(201);
     res.send(dbRes);
     res.end();
@@ -129,13 +156,27 @@ export async function updateHelpRequest(req: Request, res: Response) {
         helprequestReq.call_length = Math.floor((end - start) / 1000);
       }
     }
-    const dbRes = await HelpRequestModel.update(helprequestReq, {
+    await HelpRequestModel.update(helprequestReq, {
       where: { id: helprequestId },
-      returning: true,
+    });
+    const dbRes = await HelpRequestModel.findOne({
+      where: { id: helprequestId },
+      include: [
+        {
+          model: StudentModel,
+          as: 'student',
+          attributes: ['id', 'name', 'photo_url'],
+        },
+        {
+          model: TutorModel,
+          as: 'tutor',
+          attributes: ['id', 'name', 'photo_url'],
+        },
+      ],
     });
     updateTutorAvgRating(original.tutor_id);
     res.status(202);
-    res.send(dbRes[1][0]);
+    res.send(dbRes);
     res.end();
   } catch (error) {
     res.status(500);
@@ -161,10 +202,34 @@ export async function getFilteredHelpRequests(req: Request, res: Response) {
         where: query,
         limit: limit_responses,
         order: [['time_opened', 'ASC']],
+        include: [
+          {
+            model: StudentModel,
+            as: 'student',
+            attributes: ['id', 'name', 'photo_url'],
+          },
+          {
+            model: TutorModel,
+            as: 'tutor',
+            attributes: ['id', 'name', 'photo_url'],
+          },
+        ],
       });
     } else {
       dbRes = await HelpRequestModel.findAll({
         where: query,
+        include: [
+          {
+            model: StudentModel,
+            as: 'student',
+            attributes: ['id', 'name', 'photo_url'],
+          },
+          {
+            model: TutorModel,
+            as: 'tutor',
+            attributes: ['id', 'name', 'photo_url'],
+          },
+        ],
       });
     }
     res.status(202);
@@ -193,6 +258,18 @@ export async function getPendingHelpRequests(req: Request, res: Response) {
         student_id: { [Op.notIn]: blockingStudents },
       },
       order: [['time_opened', 'ASC']],
+      include: [
+        {
+          model: StudentModel,
+          as: 'student',
+          attributes: ['id', 'name', 'photo_url'],
+        },
+        {
+          model: TutorModel,
+          as: 'tutor',
+          attributes: ['id', 'name', 'photo_url'],
+        },
+      ],
     });
     const availableHelpRequests = pendingHelpRequests.filter((hr) =>
       hr.favourites_only ? followingStudents.includes(hr.student_id) : true
