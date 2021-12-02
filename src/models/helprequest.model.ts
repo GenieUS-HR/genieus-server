@@ -28,6 +28,11 @@ class HelpRequestModel extends Model<HelpRequest> {
     name: string;
     photo_url: string;
   };
+  public tutor: {
+    id: string;
+    name: string;
+    photo_url: string;
+  };
 }
 
 HelpRequestModel.init(

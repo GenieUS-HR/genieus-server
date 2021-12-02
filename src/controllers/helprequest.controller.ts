@@ -1,28 +1,17 @@
 import { Request, Response } from 'express';
-import helprequest from '../types/helprequest.js';
+import { randomUUID } from 'crypto';
+import HelpRequest, {
+  HelpRequestRequest,
+  HelpRequestResponse,
+  HelpRequestUpdate,
+} from '../types/helprequest.js';
 import HelpRequestModel from '../models/helprequest.model.js';
 import TutorModel from '../models/tutor.model.js';
 import StudentModel from '../models/student.model.js';
 
-// include student/tutor name and photo in the response
-// async function attachTutor(tutor_id: string) {
-//   const { id, name, photo_url } = await TutorModel.findOne({
-//     attributes: ['id', 'name', 'photo_url'],
-//     where: { id: tutor_id },
-//   });
-//   return { id, name, photo_url };
-// }
-// async function attachStudent(student_id: string) {
-//   const { id, name, photo_url } = await StudentModel.findOne({
-//     attributes: ['id', 'name', 'photo_url'],
-//     where: { id: student_id },
-//   });
-//   return { id, name, photo_url };
-// }
-
 export async function getAllHelpRequests(req: Request, res: Response) {
   try {
-    const dbRes = await HelpRequestModel.findAll({
+    const dbRes = (await HelpRequestModel.findAll({
       include: [
         {
           model: StudentModel,
@@ -35,7 +24,7 @@ export async function getAllHelpRequests(req: Request, res: Response) {
           attributes: ['id', 'name', 'photo_url'],
         },
       ],
-    });
+    })) as HelpRequestResponse[];
     res.status(200);
     res.send(dbRes);
     res.end();
@@ -49,9 +38,9 @@ export async function getAllHelpRequests(req: Request, res: Response) {
 export async function getHelpRequest(req: Request, res: Response) {
   try {
     const helprequestId = req.params.id;
-    const dbRes = await HelpRequestModel.findOne({
+    const dbRes = (await HelpRequestModel.findOne({
       where: { id: helprequestId },
-    });
+    })) as HelpRequestResponse;
     if (dbRes) {
       res.status(200);
       res.send(dbRes);
@@ -70,10 +59,10 @@ export async function getHelpRequest(req: Request, res: Response) {
 
 export async function addHelpRequest(req: Request, res: Response) {
   try {
-    const helpreqeustReq = req.body;
-    const helprequest: helprequest = {
+    const helpreqeustReq: HelpRequestRequest = req.body;
+    const helprequest: HelpRequest = {
       ...helpreqeustReq,
-      id: Math.random().toString(36).substr(2, 16), // how to set id?
+      id: randomUUID(),
       status: 'pending',
       time_opened: new Date(),
       time_accepted: null,
@@ -82,9 +71,11 @@ export async function addHelpRequest(req: Request, res: Response) {
       feedback_comments: null,
       zoom_url: null,
       call_length: null,
-      tutor: null,
+      tutor_id: null,
     };
-    const dbRes = await HelpRequestModel.create(helprequest);
+    const dbRes = (await HelpRequestModel.create(
+      helprequest
+    )) as HelpRequestResponse;
     res.status(201);
     res.send(dbRes);
     res.end();
@@ -111,7 +102,7 @@ export async function deleteHelpRequest(req: Request, res: Response) {
 export async function updateHelpRequest(req: Request, res: Response) {
   try {
     const helprequestId = req.params.id;
-    const helprequestReq = req.body;
+    const helprequestReq: HelpRequestUpdate = req.body;
     const original = await HelpRequestModel.findOne({
       where: { id: helprequestId },
     });
