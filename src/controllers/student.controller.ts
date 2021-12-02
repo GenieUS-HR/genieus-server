@@ -50,7 +50,6 @@ export async function addStudent(req: Request, res: Response) {
       blocked_tutors: [],
       bio: '',
     };
-    console.log(student);
     const dbRes = await StudentModel.create(student);
     res.status(201);
     res.send(dbRes);
@@ -109,7 +108,6 @@ export async function getFavouriteTutor(req: Request, res: Response) {
     const tutorlist = await TutorModel.findAll({
       where: { id: favourite_tutors },
     });
-    console.log(tutorlist);
     res.status(202);
     res.send(tutorlist);
     res.end();

@@ -506,34 +506,7 @@ POST
 
 Status 201
 
-```
-{
-  id: string
-  status: string
-  description: text
-  time_opened: date
-  time_accepted: date | null
-  time_closed: date | null
-  rating: integer | null
-  feedback_comments: text | null
-  tags: string[]
-  language: string
-  code: text
-  zoom_url: string
-  call_length: integer
-  favourites_only: boolean
-  tutor: {
-    tutor_id: string | null
-    tutor_name: string
-    tutor_photo_url?: string
-  }
-  student: {
-    student_id: string
-    student_name: string
-    student_photo_url?: string
-  }
-}
-```
+[HelpRequest](#helpRequestType)
 
 ---
 
@@ -596,34 +569,7 @@ Submit feedback on a help request:
 
 Status 201
 
-```
-{
-  id: string
-  student_id: string
-  tutor_id: string | null
-  status: string
-  description: text
-  time_opened: date
-  time_accepted: date | null
-  time_closed: date | null
-  rating: integer | null
-  feedback_comments: text | null
-  tags: string[]
-  language: string
-  code: text
-  zoom_url: string
-  call_length: integer
-  favourites_only: boolean
-  tutor: {
-    tutor_name: string
-    tutor_photo_url?: string
-  }
-  student: {
-    student_name: string
-    student_photo_url?: string
-  }
-}
-```
+[HelpRequest](#helpRequestType)
 
 ---
 
@@ -657,34 +603,7 @@ GET
 
 Status 200
 
-```
-{
-  id: string
-  student_id: string
-  tutor_id: string | null
-  status: string
-  description: text
-  time_opened: date
-  time_accepted: date | null
-  time_closed: date | null
-  rating: integer | null
-  feedback_comments: text | null
-  tags: string[]
-  language: string
-  code: text
-  zoom_url: string
-  call_length: integer
-  favourites_only: boolean
-  tutor: {
-    tutor_name: string
-    tutor_photo_url?: string
-  }
-  student: {
-    student_name: string
-    student_photo_url?: string
-  }
-}
-```
+[HelpRequest](#helpRequestType)
 
 ---
 
@@ -712,36 +631,7 @@ Status 200
 
 - response will be sorted with newest requests first
 
-```
-[
-  {
-    id: string
-    student_id: string
-    tutor_id: string | null
-    status: string
-    description: text
-    time_opened: date
-    time_accepted: date | null
-    time_closed: date | null
-    rating: integer | null
-    feedback_comments: text | null
-    tags: string[]
-    language: string
-    code: text
-    zoom_url: string
-    call_length: integer
-    favourites_only: boolean
-    tutor: {
-      tutor_name: string
-      tutor_photo_url?: string
-    }
-    student: {
-      student_name: string
-      student_photo_url?: string
-    }
-  }
-]
-```
+[HelpRequest[]](#helpRequestType)
 
 ---
 
@@ -765,36 +655,7 @@ Status 200
 - list will be filtered to exclude any requests from users that have blocked the tutor
 - if help request if favourites only then reponse should only be included if favourite tutors
 
-```
-[
-  {
-    id: string
-    student_id: string
-    tutor_id: string | null
-    status: string
-    description: text
-    time_opened: date
-    time_accepted: date | null
-    time_closed: date | null
-    rating: integer | null
-    feedback_comments: text | null
-    tags: string[]
-    language: string
-    code: text
-    zoom_url: string
-    call_length: integer
-    favourites_only: boolean
-    tutor: {
-      tutor_name: string
-      tutor_photo_url?: string
-    }
-    student: {
-      student_name: string
-      student_photo_url?: string
-    }
-  }
-]
-```
+[HelpRequest[]](#helpRequestType)
 
 ---
 
@@ -846,7 +707,7 @@ Status 200
 }
 ```
 
-### <a id="tutorType">Type</a>
+### <a id="tutorType">Tutor</a>
 
 ```
 {
@@ -862,5 +723,38 @@ Status 200
   completed_help_requests: number;
   tags: string[];
   programming_languages: string[];
+}
+```
+
+### <a id="helpRequestType">Help Request</a>
+
+```
+{
+  id: string
+  student_id: string
+  tutor_id?: string
+  status: string
+  description: text
+  time_opened: date
+  time_accepted?: date
+  time_closed?: date
+  rating?: integer
+  feedback_comments?: text
+  tags: string[]
+  language: string
+  code: text
+  zoom_url: string
+  call_length: integer
+  favourites_only: boolean
+  tutor?: {
+    id: string
+    name: string
+    photo_url?: string
+  }
+  student: {
+    id: string
+    name: string
+    photo_url?: string
+  }
 }
 ```

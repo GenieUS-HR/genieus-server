@@ -3,6 +3,8 @@ import sequelize from 'sequelize';
 const { Model, DataTypes } = sequelize;
 import sequelizeConnection from './sequelize.js';
 import HelpRequest from '../types/helprequest';
+import StudentModel from './student.model.js';
+import TutorModel from './tutor.model.js';
 
 class HelpRequestModel extends Model<HelpRequest> {
   public id: string;
@@ -19,15 +21,17 @@ class HelpRequestModel extends Model<HelpRequest> {
   public zoom_url: string;
   public call_length: number;
   public favourites_only: boolean;
-  public tutor: {
-    tutor_id: string;
-    tutor_name: string;
-    tutor_photo_url: string;
-  };
+  public tutor_id: string;
+  public student_id: string;
   public student: {
-    student_id: string;
-    student_name: string;
-    student_photo_url: string;
+    id: string;
+    name: string;
+    photo_url: string;
+  };
+  public tutor: {
+    id: string;
+    name: string;
+    photo_url: string;
   };
 }
 
@@ -79,11 +83,11 @@ HelpRequestModel.init(
     favourites_only: {
       type: DataTypes.BOOLEAN,
     },
-    tutor: {
-      type: DataTypes.JSON,
+    tutor_id: {
+      type: DataTypes.STRING,
     },
-    student: {
-      type: DataTypes.JSON,
+    student_id: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },
@@ -93,5 +97,16 @@ HelpRequestModel.init(
     sequelize: sequelizeConnection,
   }
 );
+
+HelpRequestModel.belongsTo(StudentModel, {
+  foreignKey: 'student_id',
+  targetKey: 'id',
+  as: 'student',
+});
+HelpRequestModel.belongsTo(TutorModel, {
+  foreignKey: 'tutor_id',
+  targetKey: 'id',
+  as: 'tutor',
+});
 
 export default HelpRequestModel;
