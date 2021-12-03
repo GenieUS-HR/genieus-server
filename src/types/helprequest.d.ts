@@ -25,6 +25,8 @@ export default interface HelpRequest extends HelpRequestRequest {
   zoom_url: string | null;
   call_length: number;
   tutor_id: string | null;
+  interested_tutors: string[];
+  blocked_tutors: string[];
 }
 
 export interface HelpRequestResponse extends HelpRequest {

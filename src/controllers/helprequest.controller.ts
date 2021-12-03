@@ -48,9 +48,9 @@ export async function getHelpRequest(req: Request, res: Response) {
 
 export async function addHelpRequest(req: Request, res: Response) {
   try {
-    const helpreqeustReq: HelpRequestRequest = req.body;
+    const helprequestReq: HelpRequestRequest = req.body;
     const helprequest: HelpRequest = {
-      ...helpreqeustReq,
+      ...helprequestReq,
       id: randomUUID(),
       status: 'pending',
       time_opened: new Date(),
@@ -61,6 +61,8 @@ export async function addHelpRequest(req: Request, res: Response) {
       zoom_url: null,
       call_length: null,
       tutor_id: null,
+      interested_tutors: [],
+      blocked_tutors: [],
     };
     const createdHR = (await HelpRequestModel.create(
       helprequest
@@ -266,6 +268,58 @@ export async function getFilteredHelpRequests(req: Request, res: Response) {
     }
     res.status(202);
     res.send(dbRes);
+    res.end();
+  } catch (error) {
+    res.status(500);
+    res.send(error);
+    res.end();
+  }
+}
+
+export async function setInterestedTutor(req: Request, res: Response) {
+  try {
+    const { id, dir } = req.params;
+    const { tutor_id } = req.body;
+    if (!tutor_id) {
+      res.status(400);
+      res.send('error, please provide tutor_id in help request body');
+      res.end();
+    }
+    let dbRes: [number, HelpRequestModel[]];
+    if (dir === 'push') {
+      dbRes = await HelpRequestModel.update(
+        {
+          interested_tutors: sequelize.fn(
+            'array_append',
+            sequelize.col('interested_tutors'),
+            tutor_id
+          ),
+        },
+        { where: { id }, returning: true }
+      );
+    } else if (dir === 'remove') {
+      dbRes = await HelpRequestModel.update(
+        {
+          interested_tutors: sequelize.fn(
+            'array_remove',
+            sequelize.col('interested_tutors'),
+            tutor_id
+          ),
+          blocked_tutors: sequelize.fn(
+            'array_append',
+            sequelize.col('blocked_tutors'),
+            tutor_id
+          ),
+        },
+        { where: { id }, returning: true }
+      );
+    } else {
+      res.status(404);
+      res.send('error, valid endpoints are interested/:id/push and /remove');
+      res.end();
+    }
+    res.status(202);
+    res.send(dbRes[1][0]);
     res.end();
   } catch (error) {
     res.status(500);

@@ -22,6 +22,7 @@ import {
   addHelpRequest,
   deleteHelpRequest,
   updateHelpRequest,
+  setInterestedTutor,
   getFilteredHelpRequests,
   getPendingHelpRequests,
 } from './controllers/helprequest.controller.js';
@@ -51,6 +52,7 @@ router.get('/helprequest/:id', getHelpRequest);
 router.post('/helprequest', addHelpRequest);
 router.delete('/helprequest/:id', deleteHelpRequest);
 router.patch('/helprequest/:id', updateHelpRequest);
+router.put('/helprequest/:id/interested/:dir', setInterestedTutor);
 router.get('/helprequest/pending/:tutor_id', getPendingHelpRequests);
 
 router.get('/subscription', getSubscription);

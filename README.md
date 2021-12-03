@@ -4,39 +4,38 @@ Codeworks seniors London - thesis project Nov 2021
 
 ## API Endpoints summary
 
-| API                                                  | Method | Endpoint                            | Status | Deployed? |
-| :--------------------------------------------------- | :----- | :---------------------------------- | -----: | --------: |
+| API                                                  | Method | Endpoint                           | Status | Deployed? |
+| :--------------------------------------------------- | :----- | :--------------------------------- | -----: | --------: |
 | 📝 Students                                          |
-| [Add Student](#addStudent)                           | POST   | /student                            |    201 |         Y |
-| [Get Student](#getStudent)                           | GET    | /student/:id                        |    200 |         Y |
-| [Update Student](#updateStudent)                     | PATCH  | /student/:id                        |    202 |         Y |
-| [Extend Subscription](#extendSubscription)           | PUT    | /student/:id/subscribe              |    202 |         N |
-| [Delete Student](#deleteStudent)                     | DELETE | /student/:id                        |    204 |         Y |
-| [Push Favourite Tutor](#pushFavouriteTutor)          | PUT    | /student/:id/favourite/push         |    202 |         Y |
-| [Remove Favourite Tutor](#removeFavouriteTutor)      | PUT    | /student/:id/favourite/remove       |    202 |         Y |
-| [Replace Favourite Tutors](#replaceFavouriteTutors)  | PUT    | /student/:id/favourite/replace      |    202 |         Y |
-| [Get Favourite Tutors](#getFavouriteTutors)          | GET    | /student/:id/favourite              |    200 |         Y |
-| [Push Blocked Tutor](#pushBlockTutor)                | PUT    | /student/:id/block/push             |    202 |         Y |
-| [Remove Blocked Tutor](#removeBlockTutor)            | PUT    | /student/:id/block/remove           |    202 |         Y |
-| [Replace Blocked Tutors](#replaceBlockTutor)         | PUT    | /student/:id/block/replace          |    202 |         Y |
-| [Get Blocked Tutors](#getBlockedTutors)              | GET    | /student/:id/block                  |    202 |         Y |
+| [Add Student](#addStudent)                           | POST   | /student                           |    201 |         Y |
+| [Get Student](#getStudent)                           | GET    | /student/:id                       |    200 |         Y |
+| [Update Student](#updateStudent)                     | PATCH  | /student/:id                       |    202 |         Y |
+| [Extend Subscription](#extendSubscription)           | PUT    | /student/:id/subscribe             |    202 |         N |
+| [Delete Student](#deleteStudent)                     | DELETE | /student/:id                       |    204 |         Y |
+| [Push Favourite Tutor](#pushFavouriteTutor)          | PUT    | /student/:id/favourite/push        |    202 |         Y |
+| [Remove Favourite Tutor](#removeFavouriteTutor)      | PUT    | /student/:id/favourite/remove      |    202 |         Y |
+| [Replace Favourite Tutors](#replaceFavouriteTutors)  | PUT    | /student/:id/favourite/replace     |    202 |         Y |
+| [Get Favourite Tutors](#getFavouriteTutors)          | GET    | /student/:id/favourite             |    200 |         Y |
+| [Push Blocked Tutor](#pushBlockTutor)                | PUT    | /student/:id/block/push            |    202 |         Y |
+| [Remove Blocked Tutor](#removeBlockTutor)            | PUT    | /student/:id/block/remove          |    202 |         Y |
+| [Replace Blocked Tutors](#replaceBlockTutor)         | PUT    | /student/:id/block/replace         |    202 |         Y |
+| [Get Blocked Tutors](#getBlockedTutors)              | GET    | /student/:id/block                 |    202 |         Y |
 | 🧑‍🏫 Tutors                                         |
-| [Add Tutor](#addTutor)                               | POST   | /tutor                              |    201 |         Y |
-| [Get Tutor](#getTutor)                               | GET    | /tutor/:id                          |    200 |         Y |
-| [Update Tutor](#updateTutor)                         | PATCH  | /tutor/:id                          |    202 |         Y |
-| [Delete Tutor](#deleteTutor)                         | DELETE | /tutor/:id                          |    204 |         Y |
+| [Add Tutor](#addTutor)                               | POST   | /tutor                             |    201 |         Y |
+| [Get Tutor](#getTutor)                               | GET    | /tutor/:id                         |    200 |         Y |
+| [Update Tutor](#updateTutor)                         | PATCH  | /tutor/:id                         |    202 |         Y |
+| [Delete Tutor](#deleteTutor)                         | DELETE | /tutor/:id                         |    204 |         Y |
 | 🙋‍♀️ Help Requests                                     |
-| [Add Help Request](#addHelpRequest)                  | POST   | /helprequest                        |    201 |         Y |
-| [Update Help Request](#updateHelpRequest)            | PATCH  | /helprequest/:id                    |    202 |         Y |
-| [Push Interested Tutor](#pushInterestedTutor)        | PUT    | /helprequest/:id/interested/push    |    202 |         Y |
-| [Remove Interested Tutor](#removeInterestedTutor)    | PUT    | /helprequest/:id/interested/remove  |    202 |         Y |
-| [Replace Interested Tutors](#replaceInterestedTutor) | PUT    | /helprequest/:id/interested/replace |    202 |         Y |
-| [Delete Help Request](#closeHelpRequest)             | DELETE | /helprequest/:id                    |    204 |         Y |
-| [Get Help Request](#getHelpRequest)                  | GET    | /helprequest/:id                    |    200 |         Y |
-| [Get Help Requests](#getHelpRequests)                | GET    | /helprequest?parameter=value        |    200 |         Y |
-| [Get Pending Help Requests](#getPendingHelpRequests) | GET    | /helprequest/pending/:tutor_id      |    200 |         Y |
+| [Add Help Request](#addHelpRequest)                  | POST   | /helprequest                       |    201 |         Y |
+| [Update Help Request](#updateHelpRequest)            | PATCH  | /helprequest/:id                   |    202 |         Y |
+| [Push Interested Tutor](#pushInterestedTutor)        | PUT    | /helprequest/:id/interested/push   |    202 |         Y |
+| [Remove Interested Tutor](#removeInterestedTutor)    | PUT    | /helprequest/:id/interested/remove |    202 |         Y |
+| [Delete Help Request](#closeHelpRequest)             | DELETE | /helprequest/:id                   |    204 |         Y |
+| [Get Help Request](#getHelpRequest)                  | GET    | /helprequest/:id                   |    200 |         Y |
+| [Get Help Requests](#getHelpRequests)                | GET    | /helprequest?parameter=value       |    200 |         Y |
+| [Get Pending Help Requests](#getPendingHelpRequests) | GET    | /helprequest/pending/:tutor_id     |    200 |         Y |
 | 💰 Subscriptions                                     |
-| [Get Subscriptions](#getSubscriptions)               | GET    | /subscription                       |    200 |         Y |
+| [Get Subscriptions](#getSubscriptions)               | GET    | /subscription                      |    200 |         Y |
 
 ---
 
@@ -45,9 +44,9 @@ Codeworks seniors London - thesis project Nov 2021
 - ✓ student creates help requests : <a href="#addHelpRequest">POST /helprequest</a>
   - ✓ `helpRequest.status` set to <b>pending</b>
   - ✓ `helpRequest.time_opened` updated
-- tutors can decline or mark interest in solving help request : <a href="#pushInterestedTutor">PATCH /helprequest/:id/interested/push</a>
+- tutors can decline or mark interest in solving help request : <a href="#pushInterestedTutor">PUT /helprequest/:id/interested/push</a>
   - tutors are either added to `helpRequest.interested_tutors` or `helpRequest.blocked_tutors`
-- student can decline tutors : <a href="#removeInterestedTutor">PATCH /helprequest/:id/interested/remove</a>
+- student can decline tutors : <a href="#removeInterestedTutor">PUT /helprequest/:id/interested/remove</a>
   - declined tutors are removed from `helpRequest.interested_tutors`
   - declined tutors are added to `helpRequest.blocked_tutors`
 - ✓ student can accept tutor <a href="#updateHelpRequest">PATCH /helprequest/:id</a>
@@ -70,7 +69,7 @@ Codeworks seniors London - thesis project Nov 2021
   - ✓ `helpRequest.time_closed` and helpRequest.call_length are updated
   - ✓ `student.time_remaining` is decremented by call_length
   - ✓ `tutor.time_completed` is incremented by call_length
-  - another help request with same information is created and set as `pending` <a href="#addHelpRequest">POST /helprequest</a>
+  - another help request with same information is created and set as `pending`
 - ✓ student must rate tutor after help request <a href="#updateHelpRequest">PATCH /helprequest/:id</a>
   - ✓ `helpRequest.rating` and `helpRequest.feedback_comments` are updated based on request body
   - ✓ `tutor.completed_help_requests` is incremented by 1
@@ -606,6 +605,58 @@ Submit feedback on a help request:
 ### Response
 
 Status 201
+
+[HelpRequest](#helpRequestType)
+
+---
+
+## <a id="pushInterestedTutor">Push Interested Tutor</a>
+
+### Method
+
+PUT
+
+### Endpoint
+
+/helprequest/:id/interested/push
+
+### Request body
+
+```
+{
+  tutor_id: string
+}
+```
+
+### Response
+
+Status 202
+
+[HelpRequest](#helpRequestType)
+
+---
+
+## <a id="removeInterestedTutor">Remove Interested Tutor</a>
+
+### Method
+
+PUT
+
+### Endpoint
+
+/helprequest/:id/interested/remove
+
+### Request body
+
+```
+{
+  tutor_id: string
+}
+```
+
+### Response
+
+Status 202
 
 [HelpRequest](#helpRequestType)
 
