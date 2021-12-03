@@ -2,40 +2,40 @@
 
 Codeworks seniors London - thesis project Nov 2021
 
-## API Endpoi
+## API Endpoints
 
-| API                                                  | Method | Endpoint                           | Status |
-| :--------------------------------------------------- | :----- | :--------------------------------- | -----: |
+| API                                                  | Method  | Endpoint                           |  Status |
+| :--------------------------------------------------- | :------ | :--------------------------------- | ------: |
 | 📝 Students                                          |
-| [Add Student](#addStudent)                           | POST   | /student                           |    201 |
-| [Get Student](#getStudent)                           | GET    | /student/:id                       |    200 |
-| [Update Student](#updateStudent)                     | PATCH  | /student/:id                       |    202 |
-| ~~[Extend Subscription](#extendSubscription)~~       | PUT    | /student/:id/subscribe             |    202 |
-| [Delete Student](#deleteStudent)                     | DELETE | /student/:id                       |    204 |
-| [Push Favourite Tutor](#pushFavouriteTutor)          | PUT    | /student/:id/favourite/push        |    202 |
-| [Remove Favourite Tutor](#removeFavouriteTutor)      | PUT    | /student/:id/favourite/remove      |    202 |
-| [Replace Favourite Tutors](#replaceFavouriteTutors)  | PUT    | /student/:id/favourite/replace     |    202 |
-| [Get Favourite Tutors](#getFavouriteTutors)          | GET    | /student/:id/favourite             |    200 |
-| [Push Blocked Tutor](#pushBlockTutor)                | PUT    | /student/:id/block/push            |    202 |
-| [Remove Blocked Tutor](#removeBlockTutor)            | PUT    | /student/:id/block/remove          |    202 |
-| [Replace Blocked Tutors](#replaceBlockTutor)         | PUT    | /student/:id/block/replace         |    202 |
-| [Get Blocked Tutors](#getBlockedTutors)              | GET    | /student/:id/block                 |    202 |
+| [Add Student](#addStudent)                           | POST    | /student                           |     201 |
+| [Get Student](#getStudent)                           | GET     | /student/:id                       |     200 |
+| [Update Student](#updateStudent)                     | PATCH   | /student/:id                       |     202 |
+| ~~[Extend Subscription](#extendSubscription)~~       | ~~PUT~~ | ~~/student/:id/subscribe~~         | ~~202~~ |
+| [Delete Student](#deleteStudent)                     | DELETE  | /student/:id                       |     204 |
+| [Push Favourite Tutor](#pushFavouriteTutor)          | PUT     | /student/:id/favourite/push        |     202 |
+| [Remove Favourite Tutor](#removeFavouriteTutor)      | PUT     | /student/:id/favourite/remove      |     202 |
+| [Replace Favourite Tutors](#replaceFavouriteTutors)  | PUT     | /student/:id/favourite/replace     |     202 |
+| [Get Favourite Tutors](#getFavouriteTutors)          | GET     | /student/:id/favourite             |     200 |
+| [Push Blocked Tutor](#pushBlockTutor)                | PUT     | /student/:id/block/push            |     202 |
+| [Remove Blocked Tutor](#removeBlockTutor)            | PUT     | /student/:id/block/remove          |     202 |
+| [Replace Blocked Tutors](#replaceBlockTutor)         | PUT     | /student/:id/block/replace         |     202 |
+| [Get Blocked Tutors](#getBlockedTutors)              | GET     | /student/:id/block                 |     202 |
 | 🧑‍🏫 Tutors                                         |
-| [Add Tutor](#addTutor)                               | POST   | /tutor                             |    201 |
-| [Get Tutor](#getTutor)                               | GET    | /tutor/:id                         |    200 |
-| [Update Tutor](#updateTutor)                         | PATCH  | /tutor/:id                         |    202 |
-| [Delete Tutor](#deleteTutor)                         | DELETE | /tutor/:id                         |    204 |
+| [Add Tutor](#addTutor)                               | POST    | /tutor                             |     201 |
+| [Get Tutor](#getTutor)                               | GET     | /tutor/:id                         |     200 |
+| [Update Tutor](#updateTutor)                         | PATCH   | /tutor/:id                         |     202 |
+| [Delete Tutor](#deleteTutor)                         | DELETE  | /tutor/:id                         |     204 |
 | 🙋‍♀️ Help Requests                                     |
-| [Add Help Request](#addHelpRequest)                  | POST   | /helprequest                       |    201 |
-| [Update Help Request](#updateHelpRequest)            | PATCH  | /helprequest/:id                   |    202 |
-| [Push Interested Tutor](#pushInterestedTutor)        | PUT    | /helprequest/:id/interested/push   |    202 |
-| [Remove Interested Tutor](#removeInterestedTutor)    | PUT    | /helprequest/:id/interested/remove |    202 |
-| [Delete Help Request](#closeHelpRequest)             | DELETE | /helprequest/:id                   |    204 |
-| [Get Help Request](#getHelpRequest)                  | GET    | /helprequest/:id                   |    200 |
-| [Get Help Requests](#getHelpRequests)                | GET    | /helprequest?parameter=value       |    200 |
-| [Get Pending Help Requests](#getPendingHelpRequests) | GET    | /helprequest/pending/:tutor_id     |    200 |
+| [Add Help Request](#addHelpRequest)                  | POST    | /helprequest                       |     201 |
+| [Update Help Request](#updateHelpRequest)            | PATCH   | /helprequest/:id                   |     202 |
+| [Push Interested Tutor](#pushInterestedTutor)        | PUT     | /helprequest/:id/interested/push   |     202 |
+| [Remove Interested Tutor](#removeInterestedTutor)    | PUT     | /helprequest/:id/interested/remove |     202 |
+| [Delete Help Request](#closeHelpRequest)             | DELETE  | /helprequest/:id                   |     204 |
+| [Get Help Request](#getHelpRequest)                  | GET     | /helprequest/:id                   |     200 |
+| [Get Help Requests](#getHelpRequests)                | GET     | /helprequest?parameter=value       |     200 |
+| [Get Pending Help Requests](#getPendingHelpRequests) | GET     | /helprequest/pending/:tutor_id     |     200 |
 | 💰 Subscriptions                                     |
-| [Get Subscriptions](#getSubscriptions)               | GET    | /subscription                      |    200 |
+| [Get Subscriptions](#getSubscriptions)               | GET     | /subscription                      |     200 |
 
 ### Help Request Workflow
 

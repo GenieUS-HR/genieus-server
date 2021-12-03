@@ -124,9 +124,11 @@ export async function deleteHelpRequest(req: Request, res: Response) {
 async function updateTutorAvgRating(tutor_id: string) {
   const helpRequests = await HelpRequestModel.findAll({
     attributes: ['rating'],
-    where: { tutor_id, status: ['closed-completed', 'closed-incomplete'] },
+    where: { tutor_id, status: ['closed-complete', 'closed-incomplete'] },
   });
-  const avgRating = helpRequests.reduce((acc, curr) => acc + curr.rating, 0);
+  const avgRating =
+    helpRequests.reduce((acc, curr) => acc + curr.rating, 0) /
+    helpRequests.length;
   TutorModel.update(
     {
       avg_rating: avgRating,
