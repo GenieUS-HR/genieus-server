@@ -1,7 +1,10 @@
 import { Server, Socket } from 'socket.io';
 import InMemorySessionStore from './session-store';
+import InMemoryMessageStore from './message-store';
+import { Message } from './message-store.js';
 
 const sessionStore = new InMemorySessionStore();
+const messageStore = new InMemoryMessageStore();
 
 const userHandler = (io: Server, socket: Socket) => {
   const userID = socket.data.userID;
@@ -9,9 +12,6 @@ const userHandler = (io: Server, socket: Socket) => {
   socket.join(userID);
   // save connected status
   sessionStore.saveSession(userID, { userID, connected: true });
-
-  // send already connected users
-  // socket.emit('connected users', users);
 
   socket.broadcast.emit('user connected', userID);
 
@@ -28,6 +28,26 @@ const userHandler = (io: Server, socket: Socket) => {
       socket.broadcast.emit('user disconnected', userID);
       sessionStore.saveSession(userID, { userID, connected: false });
     }
+  });
+
+  socket.on('join help request', (helpRequestID) => {
+    // add new user to chat room
+    socket.join(helpRequestID);
+    const messages = messageStore.getMessages(helpRequestID);
+    // send messages already posted to new user joining chat
+    socket.emit('existing messages', messages);
+    socket.to(helpRequestID).emit('user joined chat', socket.data.userID);
+  });
+
+  socket.on('post message', (helpRequestID: string, message: Message) => {
+    messageStore.saveMessage(helpRequestID, message);
+    // send messages to others in chat room
+    socket.to(helpRequestID).emit('get message', message);
+  });
+
+  socket.on('leave help request', (helpRequestID) => {
+    socket.leave(helpRequestID);
+    socket.to(helpRequestID).emit('user left chat', socket.data.userID);
   });
 };
 
