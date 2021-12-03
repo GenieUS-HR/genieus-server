@@ -5,6 +5,7 @@ export default interface Tutor extends User {
   completed_help_requests: number;
   tags: string[];
   programming_languages: string[];
+  time_completed: number;
 }
 export interface TutorRequest {
   email: string;

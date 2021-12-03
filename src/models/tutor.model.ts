@@ -16,6 +16,7 @@ class TutorModel extends Model<Tutor> {
   public tags: string[];
   public programming_languages: string[];
   public bio: string;
+  public time_completed: number;
 }
 
 TutorModel.init(
@@ -41,7 +42,7 @@ TutorModel.init(
     },
     spoken_language: {
       type: DataTypes.ARRAY(DataTypes.STRING),
-      defaultValue: ['english'],
+      defaultValue: ['English'],
     },
     location: {
       type: DataTypes.STRING,
@@ -62,6 +63,9 @@ TutorModel.init(
     },
     bio: {
       type: DataTypes.TEXT,
+    },
+    time_completed: {
+      type: DataTypes.INTEGER,
     },
   },
   { modelName: 'Tutor', tableName: 'tutor', sequelize: sequelizeConnection }

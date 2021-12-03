@@ -4,6 +4,8 @@ import StudentModel from '../models/student.model.js';
 import TutorModel from '../models/tutor.model.js';
 import sequelize from 'sequelize';
 import Student from '../types/student.js';
+import { subscription } from './subscription.controller.js';
+import { addMonths } from 'date-fns';
 
 export async function getAllStudents(req: Request, res: Response) {
   try {
@@ -45,10 +47,11 @@ export async function addStudent(req: Request, res: Response) {
       ...studentReq,
       joined_date: new Date(),
       lastpayment_date: new Date(),
-      subscription_expiry: new Date(),
+      subscription_expiry: addMonths(new Date(), 1),
       favourite_tutors: [],
       blocked_tutors: [],
       bio: '',
+      time_remaining: subscription[studentReq.subscription_type].seconds,
     };
     const dbRes = await StudentModel.create(student);
     res.status(201);
