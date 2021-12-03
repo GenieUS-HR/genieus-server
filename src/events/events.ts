@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
-import InMemorySessionStore from './session-store';
-import InMemoryMessageStore from './message-store';
+import InMemorySessionStore from './session-store.js';
+import InMemoryMessageStore from './message-store.js';
 import { Message } from './message-store.js';
 
 const sessionStore = new InMemorySessionStore();
