@@ -850,3 +850,20 @@ Status 200
 ---
 
 ## Change Log
+
+### Fri Dec 3 (20:10)
+
+<b>Changes to types</b>
+
+- added interested_tutors and blocked_tutors to help request model (arrays of tutor_id)
+- note that these arrays don't do anything yet e.g. limit pending help requests
+
+<b>Changes to API</b>
+
+- added endpoints to push/remove from interested_tutors
+  - removing from interested_tutors will also push to blocked_tutors
+- automatically creating new help request (copying original) if original set to closed-incomplete
+
+<b>Other Changes</b>
+
+- fixed completed help request and average rating calculations
