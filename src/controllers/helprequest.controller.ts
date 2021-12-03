@@ -134,6 +134,19 @@ async function updateTutorAvgRating(tutor_id: string) {
   );
 }
 
+function updateStudentTimeRemaining(student_id: string, timeElapsed: number) {
+  StudentModel.decrement('time_remaining', {
+    by: timeElapsed,
+    where: { id: student_id },
+  });
+}
+function updatetutorTimeCompleted(tutor_id: string, timeElapsed: number) {
+  TutorModel.increment('time_completed', {
+    by: timeElapsed,
+    where: { id: tutor_id },
+  });
+}
+
 export async function updateHelpRequest(req: Request, res: Response) {
   try {
     const helprequestId = req.params.id;
@@ -142,6 +155,21 @@ export async function updateHelpRequest(req: Request, res: Response) {
       where: { id: helprequestId },
     });
     if (Object.keys(helprequestReq).includes('status')) {
+      if (
+        ![
+          'pending',
+          'assigned',
+          'closed-complete',
+          'closed-incomplete',
+        ].includes(helprequestReq.status)
+      ) {
+        res.status(400);
+        res.send(
+          `${helprequestReq.status} is not a valid status. Use 'pending', 'assigned', 'closed-complete', 'closed-incomplete'`
+        );
+        res.end();
+        return;
+      }
       if (helprequestReq.status === 'assigned') {
         helprequestReq.time_accepted = new Date();
         const zoomlink = await createZoom();
@@ -153,7 +181,11 @@ export async function updateHelpRequest(req: Request, res: Response) {
         helprequestReq.time_closed = new Date();
         const start = new Date(original.time_accepted).getTime();
         const end = new Date(helprequestReq.time_closed).getTime();
-        helprequestReq.call_length = Math.floor((end - start) / 1000);
+        const timeElapsed = (helprequestReq.call_length = Math.floor(
+          (end - start) / 1000
+        ));
+        updateStudentTimeRemaining(original.student_id, timeElapsed);
+        updatetutorTimeCompleted(original.tutor_id, timeElapsed);
       }
     }
     await HelpRequestModel.update(helprequestReq, {

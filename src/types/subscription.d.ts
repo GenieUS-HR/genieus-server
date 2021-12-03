@@ -1,9 +1,10 @@
-type subscription_name = 'basic' | 'pro' | 'max';
+type subscription_id = 'basic' | 'pro' | 'max';
 
 export default interface Subscription {
-  id: string;
-  subscription_name: subscription_name;
+  id: subscription_id;
+  subscription_name: string;
   description: string;
-  minutes: number;
+  seconds: number;
+  cost: number;
   active: boolean;
 }
