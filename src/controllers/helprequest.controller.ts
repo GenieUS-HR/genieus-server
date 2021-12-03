@@ -155,6 +155,21 @@ export async function updateHelpRequest(req: Request, res: Response) {
       where: { id: helprequestId },
     });
     if (Object.keys(helprequestReq).includes('status')) {
+      if (
+        ![
+          'pending',
+          'assigned',
+          'closed-complete',
+          'closed-incomplete',
+        ].includes(helprequestReq.status)
+      ) {
+        res.status(400);
+        res.send(
+          `${helprequestReq.status} is not a valid status. Use 'pending', 'assigned', 'closed-complete', 'closed-incomplete'`
+        );
+        res.end();
+        return;
+      }
       if (helprequestReq.status === 'assigned') {
         helprequestReq.time_accepted = new Date();
         const zoomlink = await createZoom();
