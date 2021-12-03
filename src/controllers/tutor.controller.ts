@@ -46,6 +46,7 @@ export async function addTutor(req: Request, res: Response) {
       bio: '',
       tags: [],
       programming_languages: [],
+      time_completed: 0,
     };
     const dbRes = await TutorModel.create(tutor);
     res.status(201);

@@ -114,7 +114,6 @@ PATCH
   photo_url?: string
   spoken_language?: string[]
   location?: string
-
 }
 ```
 
@@ -704,6 +703,7 @@ Status 200
   subscription_expiry: Date;
   favourite_tutors: string[];
   blocked_tutors: string[];
+  time_remaining: number;
 }
 ```
 
@@ -723,6 +723,7 @@ Status 200
   completed_help_requests: number;
   tags: string[];
   programming_languages: string[];
+  time_completed: number;
 }
 ```
 

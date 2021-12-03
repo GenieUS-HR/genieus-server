@@ -3,13 +3,13 @@ import sequelize from 'sequelize';
 const { Model, DataTypes } = sequelize;
 import sequelizeConnection from './sequelize.js';
 import Student from '../types/student.d.js';
-import { subscription_name } from '../types/subscription.js';
+import { subscription_id } from '../types/subscription.js';
 
 class StudentModel extends Model<Student> {
   public id: string;
   public email: string;
   public name: string;
-  public subscription_type: subscription_name;
+  public subscription_type: subscription_id;
   public lastpayment_date: Date;
   public joined_date: Date;
   public photo_url: string;
@@ -19,6 +19,7 @@ class StudentModel extends Model<Student> {
   public location: string;
   public bio: string;
   public spoken_language: string[];
+  public time_remaining: number;
 }
 
 StudentModel.init(
@@ -56,7 +57,7 @@ StudentModel.init(
     },
     spoken_language: {
       type: DataTypes.ARRAY(DataTypes.STRING),
-      defaultValue: ['english'],
+      defaultValue: ['English'],
     },
     favourite_tutors: {
       type: DataTypes.ARRAY(DataTypes.STRING),
@@ -71,6 +72,9 @@ StudentModel.init(
     },
     bio: {
       type: DataTypes.TEXT,
+    },
+    time_remaining: {
+      type: DataTypes.INTEGER,
     },
   },
   { modelName: 'Student', tableName: 'student', sequelize: sequelizeConnection }

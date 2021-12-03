@@ -1,5 +1,4 @@
 type UserSession = {
-  sessionID: string;
   userID: string;
   connected: boolean;
 };
