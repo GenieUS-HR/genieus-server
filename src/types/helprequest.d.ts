@@ -3,7 +3,7 @@ import StudentModel from '../models/student.model';
 
 // type language = 'JavaScript' | 'Python'; // options in dropbox ?
 type status = 'pending' | 'assigned' | 'closed-complete' | 'closed-incomplete';
-type rating = 1 | 2 | 3 | 4 | 5;
+type rating = 0 | 1 | 2 | 3 | 4 | 5;
 
 export interface HelpRequestRequest {
   student_id: string;
@@ -25,6 +25,8 @@ export default interface HelpRequest extends HelpRequestRequest {
   zoom_url: string | null;
   call_length: number;
   tutor_id: string | null;
+  interested_tutors: string[];
+  blocked_tutors: string[];
 }
 
 export interface HelpRequestResponse extends HelpRequest {
