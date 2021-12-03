@@ -23,6 +23,8 @@ class HelpRequestModel extends Model<HelpRequest> {
   public favourites_only: boolean;
   public tutor_id: string;
   public student_id: string;
+  public interested_tutors: string[];
+  public blocked_tutors: string[];
   public student: {
     id: string;
     name: string;
@@ -89,6 +91,12 @@ HelpRequestModel.init(
     student_id: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    interested_tutors: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+    },
+    blocked_tutors: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
     },
   },
   {

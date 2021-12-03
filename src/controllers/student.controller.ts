@@ -127,9 +127,9 @@ export async function setFavouriteTutor(req: Request, res: Response) {
     const student = await StudentModel.findOne({
       where: { id: id },
     });
+    const { tutor_id } = req.body;
+    let updatedStudent: [number, Student[]] | null = null;
     if (dir === 'push') {
-      const { tutor_id } = req.body;
-      let updatedStudent: [number, Student[]] | null = null;
       if (!student.favourite_tutors.includes(tutor_id)) {
         updatedStudent = await StudentModel.update(
           {
@@ -150,8 +150,6 @@ export async function setFavouriteTutor(req: Request, res: Response) {
       res.send(dbRes);
       res.end();
     } else if (dir === 'remove') {
-      const { tutor_id } = req.body;
-      let updatedStudent: [number, Student[]] | null = null;
       if (student.favourite_tutors.includes(tutor_id)) {
         updatedStudent = await StudentModel.update(
           {

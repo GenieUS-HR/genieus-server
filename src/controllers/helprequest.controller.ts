@@ -48,9 +48,9 @@ export async function getHelpRequest(req: Request, res: Response) {
 
 export async function addHelpRequest(req: Request, res: Response) {
   try {
-    const helpreqeustReq: HelpRequestRequest = req.body;
+    const helprequestReq: HelpRequestRequest = req.body;
     const helprequest: HelpRequest = {
-      ...helpreqeustReq,
+      ...helprequestReq,
       id: randomUUID(),
       status: 'pending',
       time_opened: new Date(),
@@ -61,6 +61,8 @@ export async function addHelpRequest(req: Request, res: Response) {
       zoom_url: null,
       call_length: null,
       tutor_id: null,
+      interested_tutors: [],
+      blocked_tutors: [],
     };
     const createdHR = (await HelpRequestModel.create(
       helprequest
@@ -122,9 +124,11 @@ export async function deleteHelpRequest(req: Request, res: Response) {
 async function updateTutorAvgRating(tutor_id: string) {
   const helpRequests = await HelpRequestModel.findAll({
     attributes: ['rating'],
-    where: { tutor_id },
+    where: { tutor_id, status: ['closed-complete', 'closed-incomplete'] },
   });
-  const avgRating = helpRequests.reduce((acc, curr) => acc + curr.rating, 0);
+  const avgRating =
+    helpRequests.reduce((acc, curr) => acc + curr.rating, 0) /
+    helpRequests.length;
   TutorModel.update(
     {
       avg_rating: avgRating,
@@ -147,6 +151,38 @@ function updatetutorTimeCompleted(tutor_id: string, timeElapsed: number) {
   });
 }
 
+function isValidStatus(status: string) {
+  return [
+    'pending',
+    'assigned',
+    'closed-complete',
+    'closed-incomplete',
+  ].includes(status);
+}
+
+async function copyHelpRequest(original: HelpRequestModel) {
+  return await HelpRequestModel.create({
+    student_id: original.student_id,
+    description: original.description,
+    tags: original.tags,
+    language: original.language,
+    code: original.code,
+    favourites_only: original.favourites_only,
+    id: randomUUID(),
+    status: 'pending',
+    time_opened: new Date(),
+    time_accepted: null,
+    time_closed: null,
+    rating: null,
+    feedback_comments: null,
+    zoom_url: null,
+    call_length: null,
+    tutor_id: null,
+    interested_tutors: [],
+    blocked_tutors: [],
+  });
+}
+
 export async function updateHelpRequest(req: Request, res: Response) {
   try {
     const helprequestId = req.params.id;
@@ -155,14 +191,7 @@ export async function updateHelpRequest(req: Request, res: Response) {
       where: { id: helprequestId },
     });
     if (Object.keys(helprequestReq).includes('status')) {
-      if (
-        ![
-          'pending',
-          'assigned',
-          'closed-complete',
-          'closed-incomplete',
-        ].includes(helprequestReq.status)
-      ) {
+      if (!isValidStatus(helprequestReq.status)) {
         res.status(400);
         res.send(
           `${helprequestReq.status} is not a valid status. Use 'pending', 'assigned', 'closed-complete', 'closed-incomplete'`
@@ -170,7 +199,14 @@ export async function updateHelpRequest(req: Request, res: Response) {
         res.end();
         return;
       }
-      if (helprequestReq.status === 'assigned') {
+      if (
+        // Go back to pending
+        original.status === 'assigned' &&
+        helprequestReq.status === 'pending'
+      ) {
+        helprequestReq.time_accepted = null;
+        helprequestReq.tutor_id = null;
+      } else if (helprequestReq.status === 'assigned') {
         helprequestReq.time_accepted = new Date();
         const zoomlink = await createZoom();
         helprequestReq.zoom_url = zoomlink;
@@ -186,6 +222,10 @@ export async function updateHelpRequest(req: Request, res: Response) {
         ));
         updateStudentTimeRemaining(original.student_id, timeElapsed);
         updatetutorTimeCompleted(original.tutor_id, timeElapsed);
+
+        if (helprequestReq.status === 'closed-incomplete') {
+          copyHelpRequest(original);
+        }
       }
     }
     await HelpRequestModel.update(helprequestReq, {
@@ -206,7 +246,9 @@ export async function updateHelpRequest(req: Request, res: Response) {
         },
       ],
     });
-    updateTutorAvgRating(original.tutor_id);
+    if (Object.keys(helprequestReq).includes('rating')) {
+      updateTutorAvgRating(original.tutor_id);
+    }
     res.status(202);
     res.send(dbRes);
     res.end();
@@ -266,6 +308,58 @@ export async function getFilteredHelpRequests(req: Request, res: Response) {
     }
     res.status(202);
     res.send(dbRes);
+    res.end();
+  } catch (error) {
+    res.status(500);
+    res.send(error);
+    res.end();
+  }
+}
+
+export async function setInterestedTutor(req: Request, res: Response) {
+  try {
+    const { id, dir } = req.params;
+    const { tutor_id } = req.body;
+    if (!tutor_id) {
+      res.status(400);
+      res.send('error, please provide tutor_id in help request body');
+      res.end();
+    }
+    let dbRes: [number, HelpRequestModel[]];
+    if (dir === 'push') {
+      dbRes = await HelpRequestModel.update(
+        {
+          interested_tutors: sequelize.fn(
+            'array_append',
+            sequelize.col('interested_tutors'),
+            tutor_id
+          ),
+        },
+        { where: { id }, returning: true }
+      );
+    } else if (dir === 'remove') {
+      dbRes = await HelpRequestModel.update(
+        {
+          interested_tutors: sequelize.fn(
+            'array_remove',
+            sequelize.col('interested_tutors'),
+            tutor_id
+          ),
+          blocked_tutors: sequelize.fn(
+            'array_append',
+            sequelize.col('blocked_tutors'),
+            tutor_id
+          ),
+        },
+        { where: { id }, returning: true }
+      );
+    } else {
+      res.status(404);
+      res.send('error, valid endpoints are interested/:id/push and /remove');
+      res.end();
+    }
+    res.status(202);
+    res.send(dbRes[1][0]);
     res.end();
   } catch (error) {
     res.status(500);
