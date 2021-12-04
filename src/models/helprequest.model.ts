@@ -24,7 +24,7 @@ class HelpRequestModel extends Model<HelpRequest> {
   public tutor_id: string;
   public student_id: string;
   public interested_tutors: string[];
-  public blocked_tutors: string[];
+  public declined_tutors: string[];
   public student: {
     id: string;
     name: string;
@@ -95,7 +95,7 @@ HelpRequestModel.init(
     interested_tutors: {
       type: DataTypes.ARRAY(DataTypes.STRING),
     },
-    blocked_tutors: {
+    declined_tutors: {
       type: DataTypes.ARRAY(DataTypes.STRING),
     },
   },
