@@ -16,7 +16,7 @@ class InMemoryMessageStore {
   }
 
   saveMessage(HelpRequestID: string, message: Message) {
-    const priorMessages = this.messages.get(HelpRequestID);
+    const priorMessages = this.messages.get(HelpRequestID) || [];
     const messages = [...priorMessages, message];
     this.messages.set(HelpRequestID, messages);
   }
