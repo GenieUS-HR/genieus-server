@@ -43,10 +43,10 @@ Codeworks seniors London - thesis project Nov 2021
   - ✓ `helpRequest.status` set to <b>pending</b>
   - ✓ `helpRequest.time_opened` updated
 - ✓ tutors can decline or mark interest in solving help request : <a href="#pushInterestedTutor">PUT /helprequest/:id/interested/push</a>
-  - ✓ tutors are either added to `helpRequest.interested_tutors` or `helpRequest.blocked_tutors`
+  - ✓ tutors are either added to `helpRequest.interested_tutors` or `helpRequest.decliend_tutors`
 - ✓ student can decline tutors : <a href="#removeInterestedTutor">PUT /helprequest/:id/interested/remove</a>
   - ✓ declined tutors are removed from `helpRequest.interested_tutors`
-  - ✓ declined tutors are added to `helpRequest.blocked_tutors`
+  - ✓ declined tutors are added to `helpRequest.decliend_tutors`
 - ✓ student can accept tutor <a href="#updateHelpRequest">PATCH /helprequest/:id</a>
   - ✓ accepted tutors are assigned to `helpRequest.tutor_id` (+name/photo added in `helpRequest.tutor`)
   - ✓ `helpRequest.status` set to <b>assigned</b>
@@ -551,6 +551,7 @@ Status 201
 > You can use this to modify the help request after it was created and also to set the status  
 > If you send a status in the request body we will update the respective dates  
 > i.e. if you send status: 'assigned', we will update the assigned date
+> i.e. if status changes from 'assigned' to 'pending', we will reset tutor_id to null and put that tutor_id in declined_tutors
 > if you send either of the closed statuses we will update the closed date  
 > If request includes rating, we will update tutor average rating
 
@@ -574,7 +575,6 @@ PATCH
   tags?: string[]
   language?: string
   code?: text
-  zoom_url?: string
   favourites_only?: boolean
 }
 ```
@@ -821,6 +821,8 @@ Status 200
   id: string
   student_id: string
   tutor_id?: string
+  interested_tutors = string[]
+  declined_tutors = string[]
   status: string
   description: text
   time_opened: date
