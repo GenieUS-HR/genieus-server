@@ -26,7 +26,7 @@ export default interface HelpRequest extends HelpRequestRequest {
   call_length: number;
   tutor_id: string | null;
   interested_tutors: string[];
-  blocked_tutors: string[];
+  declined_tutors: string[];
 }
 
 export interface HelpRequestResponse extends HelpRequest {
@@ -56,4 +56,5 @@ export interface HelpRequestUpdate {
   time_accepted?: HelpRequest['time_accepted'];
   time_closed?: HelpRequest['time_closed'];
   call_length?: HelpRequest['call_length'];
+  declined_tutors?: HelpRequest['declined_tutors'];
 }

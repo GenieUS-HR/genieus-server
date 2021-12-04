@@ -62,7 +62,7 @@ export async function addHelpRequest(req: Request, res: Response) {
       call_length: null,
       tutor_id: null,
       interested_tutors: [],
-      blocked_tutors: [],
+      declined_tutors: [],
     };
     const createdHR = (await HelpRequestModel.create(
       helprequest
@@ -179,7 +179,7 @@ async function copyHelpRequest(original: HelpRequestModel) {
     call_length: null,
     tutor_id: null,
     interested_tutors: [],
-    blocked_tutors: [],
+    declined_tutors: [],
   });
 }
 
@@ -203,9 +203,24 @@ export async function updateHelpRequest(req: Request, res: Response) {
         // Go back to pending
         original.status === 'assigned' &&
         helprequestReq.status === 'pending'
+
+        // dbRes = await HelpRequestModel.update(
+        //   {
+        //     interested_tutors: sequelize.fn(
+        //       'array_append',
+        //       sequelize.col('interested_tutors'),
+        //       tutor_id
+        //     ),
+        //   },
+        //   { where: { id }, returning: true }
+        // );
       ) {
         helprequestReq.time_accepted = null;
         helprequestReq.tutor_id = null;
+        helprequestReq.declined_tutors = [
+          ...original.declined_tutors,
+          original.tutor_id,
+        ];
       } else if (helprequestReq.status === 'assigned') {
         helprequestReq.time_accepted = new Date();
         const zoomlink = await createZoom();
@@ -345,7 +360,7 @@ export async function setInterestedTutor(req: Request, res: Response) {
             sequelize.col('interested_tutors'),
             tutor_id
           ),
-          blocked_tutors: sequelize.fn(
+          declined_tutors: sequelize.fn(
             'array_append',
             sequelize.col('blocked_tutors'),
             tutor_id
