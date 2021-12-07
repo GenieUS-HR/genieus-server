@@ -45,6 +45,10 @@ const userHandler = (io: Server, socket: Socket) => {
     socket.to(helpRequestID).emit('get message', message);
   });
 
+  socket.on('end session', (helpRequestID: string) => {
+    socket.to(helpRequestID).emit('chat closed', helpRequestID);
+  });
+
   socket.on('leave help request', (helpRequestID) => {
     socket.leave(helpRequestID);
     socket.to(helpRequestID).emit('user left chat', socket.data.userID);
