@@ -48,7 +48,7 @@ TutorModel.init(
       type: DataTypes.STRING,
     },
     avg_rating: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
     },
     completed_help_requests: {
       type: DataTypes.INTEGER,
